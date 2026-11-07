@@ -148,7 +148,7 @@ function init() {
     const total = t;
     root.style.setProperty('--film-h', `${total + 100}vh`);
     const sDive = isMobile ? 4.2 : 5.2, sSpin = 1.3;
-    const order = ['events', 'tournaments', 'scouting', 'conferences'];
+    const order = ['workshop', 'tournaments', 'scouting', 'conferences'];
 
     Object.assign(cam, { x: 0.5, y: 0.53, s: 1.5 });
     Object.values(panels).forEach((p) => Object.assign(p, { p: 0, o: 0, push: 1 }));
@@ -186,7 +186,7 @@ function init() {
     tl.set(L('hub'), { opacity: 1 }, Hb.s); tl.set(L('runout'), { opacity: 0 }, Hb.s + 0.01);
     tl.to(bloom, { opacity: 0, duration: Hb.d * 0.14, ease: 'power1.out' }, Hb.s);
     if (isMobile) {
-      tl.fromTo(cam, { x: T.conferences.x, s: 1.15 }, { x: T.events.x, s: 1, duration: Hb.d, ease: 'sine.inOut' }, Hb.s);
+      tl.fromTo(cam, { x: T.conferences.x, s: 1.15 }, { x: T.workshop.x, s: 1, duration: Hb.d, ease: 'sine.inOut' }, Hb.s);
     } else {
       tl.fromTo(cam, { x: 0.5, y: 0.53, s: 1.5 }, { s: 1, duration: Hb.d * 0.7, ease: 'sine.out' }, Hb.s);
     }
@@ -219,7 +219,7 @@ function init() {
     const SB = at.spinback;
     tl.to(door, { o: 0, p: 0.3, duration: SB.d * 0.2 }, SB.s);
     tl.to(cam, { s: 1.15, y: 0.53, duration: SB.d * 0.25, ease: 'power2.out' }, SB.s);
-    tl.to(cam, { x: T.events.x, duration: SB.d * 0.55, ease: 'power1.inOut' }, SB.s + SB.d * 0.2);
+    tl.to(cam, { x: T.workshop.x, duration: SB.d * 0.55, ease: 'power1.inOut' }, SB.s + SB.d * 0.2);
     tl.call(() => $$('.mouth').forEach((m) => m.classList.toggle('is-lit', tl.time() >= SB.s && tl.time() < SB.e)), null, SB.s);
     chap('spinback', SB.s, SB.d, 0.1, 0.7);
     tl.to(dip, { opacity: 1, duration: SB.d * 0.2, ease: 'power1.in' }, SB.e - SB.d * 0.2);
@@ -230,6 +230,11 @@ function init() {
     tl.to(dip, { opacity: 0, duration: Tm.d * 0.08 }, Tm.s);
     tl.fromTo(L('team'), { scale: 1 }, { scale: 1.12, duration: Tm.d, ease: 'none' }, Tm.s);
     chap('team', Tm.s, Tm.d, 0.12, 0.86);
+    // Walk-out order follows the titles: Founder, Co-founder, Head of Football, Head of Marketing & Events.
+    // Each name lands after "their" step, one per scroll stretch (per-person footage slots in here later).
+    $$('[data-chapter="team"] .team-names li').forEach((li, i) => {
+      tl.fromTo(li, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: Tm.d * 0.06, ease: 'power2.out' }, Tm.s + Tm.d * (0.16 + i * 0.16));
+    });
     tl.to(dip, { opacity: 1, duration: Tm.d * 0.08, ease: 'power1.in' }, Tm.e - Tm.d * 0.08);
 
     // 10 Rise and ending: slow upward drift and zoom-out, the last chapter holds.

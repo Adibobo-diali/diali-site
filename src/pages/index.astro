@@ -13,14 +13,14 @@ const past = event.mode === 'past';
 const T = film.hub.tunnels;
 const beat = (id: string) => film.beats.find((b: any) => b.id === id);
 const hub = img(film.hub.image);
-const photos = { events: beat('events').photo, tournaments: beat('tournaments').photo, scouting: beat('scouting').photo };
+const photos = { workshop: beat('workshop').photo, tournaments: beat('tournaments').photo, scouting: beat('scouting').photo };
 const filmConfig = {
   beats: film.beats, tunnels: T, hubAspect: film.hub.aspect, frames: film.frames.walkout,
   start: event.start.toISOString(), past,
 };
 const tunnelCopy = {
-  events: { label: 'Events', fact: 'Spot The Spark · 20+ young people, 4 experts · What scouts really look for.', link: 'See our events', alt: 'Young people listening during the Spot The Spark workshop' },
-  tournaments: { label: 'Tournaments', fact: 'Dream Big I & II · Next up: the FC 27 tournament, 20 Dec.', link: 'FC 27 tournament', alt: 'Players and coaches together after Dream Big Tournament II' },
+  workshop: { label: 'Workshop', fact: 'Spot The Spark · 20+ young people, 4 experts · What scouts really look for.', link: 'See the workshop', alt: 'Young people listening during the Spot The Spark workshop' },
+  tournaments: { label: 'Tournament', fact: 'Dream Big I & II · Next up: the FC 27 tournament, 20 Dec.', link: 'FC 27 tournament', alt: 'Players and coaches together after Dream Big Tournament II' },
   scouting: { label: 'Scouting', fact: '', link: 'How scouting works', alt: 'Cultural Leonesa academy staff at a press table' },
 };
 ---
@@ -102,7 +102,7 @@ const tunnelCopy = {
         </ul>
       </div>
 
-      {(['events', 'tournaments', 'scouting'] as const).map((k) => (
+      {(['workshop', 'tournaments', 'scouting'] as const).map((k) => (
         <div class={`chapter chapter--tunnel`} data-chapter={k}>
           <span class="eyebrow">{tunnelCopy[k].label}</span>
           {k === 'scouting' ? (
@@ -118,7 +118,7 @@ const tunnelCopy = {
       ))}
 
       <div class="chapter chapter--door" data-chapter="conferences">
-        <span class="eyebrow">Conferences</span>
+        <span class="eyebrow">Conference</span>
         <h2 class="chapter__title">{event.title} · Sun 20 Dec</h2>
         {!past && <p class="countdown chapter__body" data-countdown={event.start.toISOString()}>Starts in <strong>…</strong></p>}
         <a class="btn btn--gold" href="/the-mind-behind-the-game" data-door-link data-cta="door">Enter the conference</a>
@@ -163,10 +163,10 @@ const tunnelCopy = {
       <span class="eyebrow">Four ways in</span>
       <h2 id="doors-h">Choose your tunnel.</h2>
       <div class="grid grid-4" style="margin-top:28px">
-        <a class="card" href="/events"><Photo k={photos.events} alt={tunnelCopy.events.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Events</h4><span class="muted small">{tunnelCopy.events.fact}</span></a>
-        <a class="card" href="/fc27"><Photo k={photos.tournaments} alt={tunnelCopy.tournaments.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Tournaments</h4><span class="muted small">{tunnelCopy.tournaments.fact}</span></a>
+        <a class="card" href="/events/spot-the-spark"><Photo k={photos.workshop} alt={tunnelCopy.workshop.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Workshop</h4><span class="muted small">{tunnelCopy.workshop.fact}</span></a>
+        <a class="card" href="/fc27"><Photo k={photos.tournaments} alt={tunnelCopy.tournaments.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Tournament</h4><span class="muted small">{tunnelCopy.tournaments.fact}</span></a>
         <a class="card" href="/our-programs#scouting"><Photo k={photos.scouting} alt={tunnelCopy.scouting.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Scouting</h4><span class="muted small">A partner trial at Cultural Leonesa, Spain. A real pathway, never a promise.</span></a>
-        <div class="card"><Photo k="film/conf_04_voices_stage" alt="" ai sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Conferences</h4><span class="muted small">{event.title} · Sun 20 Dec</span><a class="btn btn--gold btn--small" style="justify-self:start" href="/the-mind-behind-the-game">Enter the conference</a></div>
+        <div class="card"><Photo k="film/conf_04_voices_stage" alt="" ai sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Conference</h4><span class="muted small">{event.title} · Sun 20 Dec</span><a class="btn btn--gold btn--small" style="justify-self:start" href="/the-mind-behind-the-game">Enter the conference</a></div>
       </div>
     </div>
   </section>

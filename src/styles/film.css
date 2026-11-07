@@ -55,7 +55,7 @@
 .proof li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 12px; vertical-align: middle; transform: translateY(-4px); }
 .chapter--center { left: 0; right: 0; max-width: none; text-align: center; bottom: 45%; }
 .chapter--team { max-width: 560px; }
-.team-names { list-style: none; padding: 0; margin: 0 0 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+.team-names { list-style: none; padding: 0; margin: 0 0 18px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 24px; }
 .team-names strong { display: block; font-weight: 600; }
 .team-names span { color: var(--gold); font-size: var(--fs-small); }
 .chapter--ending { max-width: 760px; }

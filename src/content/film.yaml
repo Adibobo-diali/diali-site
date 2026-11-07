@@ -5,17 +5,17 @@ hub:
   image: film/home_03_four_tunnels_hub
   aspect: 2.356
   tunnels:
-    events:      { x: 0.215, y: 0.545, w: 0.040, h: 0.064, href: /events, label: Events }
-    tournaments: { x: 0.418, y: 0.537, w: 0.038, h: 0.052, href: /fc27, label: Tournaments }
+    workshop:    { x: 0.215, y: 0.545, w: 0.040, h: 0.064, href: /events/spot-the-spark, label: Workshop }
+    tournaments: { x: 0.418, y: 0.537, w: 0.038, h: 0.052, href: /fc27, label: Tournament }
     scouting:    { x: 0.584, y: 0.537, w: 0.034, h: 0.052, href: /our-programs#scouting, label: Scouting }
-    conferences: { x: 0.783, y: 0.547, w: 0.040, h: 0.064, href: /the-mind-behind-the-game, label: Conferences }
+    conferences: { x: 0.783, y: 0.547, w: 0.040, h: 0.064, href: /the-mind-behind-the-game, label: Conference }
 frames:
   walkout: { desktop: /frames/desktop/walkout, mobile: /frames/mobile/walkout, count: 101, fps: 20, version: "20261106" }
 beats:
   - { id: breathe,     vh: 80,  vhMobile: 45 }
   - { id: runout,      vh: 120, vhMobile: 90 }
   - { id: hub,         vh: 50,  vhMobile: 40 }
-  - { id: events,      vh: 100, vhMobile: 75, photo: photos/spot-the-spark-room }
+  - { id: workshop,    vh: 100, vhMobile: 75, photo: photos/spot-the-spark-room }
   - { id: spin1,       vh: 50,  vhMobile: 40 }
   - { id: tournaments, vh: 100, vhMobile: 75, photo: photos/dream-big-ii-group }
   - { id: spin2,       vh: 50,  vhMobile: 40 }
@@ -23,5 +23,5 @@ beats:
   - { id: spin3,       vh: 50,  vhMobile: 40 }
   - { id: conferences, vh: 120, vhMobile: 90 }
   - { id: spinback,    vh: 40,  vhMobile: 30 }
-  - { id: team,        vh: 120, vhMobile: 90 }
+  - { id: team,        vh: 220, vhMobile: 160 }
   - { id: ending,      vh: 180, vhMobile: 130 }
