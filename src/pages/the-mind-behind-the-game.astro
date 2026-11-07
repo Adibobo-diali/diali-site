@@ -82,6 +82,7 @@ const confFilm = { questions: event.questions, doubt: event.doubt_words };
         <div class="row">
           {past ? <a class="btn btn--gold" href="#details">Read the recap</a> : <a class="btn btn--gold" href="/seats" data-cta="conf-hero">Reserve your seat</a>}
         </div>
+        {!past && <p class="chapter__body small" style="display:block;margin-top:14px">Girls welcome. The number 20 is for whoever steps up. <a class="link-arrow" href="/seats" data-cta="conf-girls">Reserve your seat</a></p>}
       </div>
       <div class="chapter chapter--center" data-chapter="mind">
         <p class="h-serif" style="font-size:var(--fs-h1);margin:0">{event.line}</p>
