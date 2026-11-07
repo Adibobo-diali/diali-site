@@ -25,3 +25,9 @@
 
 ## TO CONFIRM
 The full grouped list is in the review doc: https://claude.ai/artifact/Rkks22Q7J9VCFAq15ygR5q
+
+## Film 5.4 (2026-11-07)
+- The home and conference films are drawn on a canvas from frame atlases (12 fps, 6 frames per WebP, a soft blend between frames), not by seeking a video. Seeking was choppy and fails on hosts without Range support.
+- Build: `CLIPS=/mnt/project-files/diali-site/final-stills bash scripts/build-frames.sh`, then copy the frame counts from `public/film/frames.json` and the clip lengths from `public/film/*-segments.txt` into `src/content/film.yaml`. `scripts/encode-film.sh` makes the hero loop and posters from the run-out clip.
+- The atlases are not in git yet (see .gitignore). Commit them once the final Seedance footage is approved.
+- Phone atlases are about 50 MB for the home film. Target before launch: under 15 MB (fewer frames per second, smaller frames).

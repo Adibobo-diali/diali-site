@@ -14,8 +14,10 @@ const walk = async (d) => (await Promise.all((await fs.readdir(d, { withFileType
 let files = await walk(out);
 // Drop AVIF and unused JPG fallbacks, and the API-only / server files.
 for (const f of files) if (/\.avif$/.test(f) || /\/media\/.*\.jpg$/.test(f) || /_redirects$|_headers$/.test(f)) await fs.rm(f);
-// The 5.3 film plays from one video; the 5.2 canvas frames are not used, so they stay out of the preview.
+// The film plays from atlases; the 5.2 canvas frames are not used, so they stay out of the preview.
 await fs.rm(path.join(out, 'frames'), { recursive: true, force: true });
+// Preview only (511-file cap): phones draw the desktop atlases with a centre crop.
+for (const f of ['home', 'conf']) await fs.rm(path.join(out, 'film', f, 'mobile'), { recursive: true, force: true });
 // Preview only: modern browsers use woff2, the copy is Latin only, and the host refuses .ics files.
 for (const f of await walk(out)) if (/\.woff$/.test(f) || /(cyrillic|greek|vietnamese)[^/]*\.woff2$/.test(f) || /\.ics$/.test(f)) await fs.rm(f);
 files = await walk(out);
@@ -56,6 +58,7 @@ for (const f of files) {
     s = s.replace('<head>', `<head><base href="${base}">`);
   }
   s = s.replace(JSTPL, (_, p) => '`' + p + '/index.html?');
+  s = s.replace(/\/film\/(home|conf)\/mobile/g, '/film/$1/desktop');
   s = s.replace(JSSTR, (_, q, u) => q + fixUrl(u) + q);
   s = f.endsWith('.css') ? s.replace(/url\(\/assets\//g, 'url(./') : s.replace(CSSURL, (_, u) => `url(${fixUrl(u)})`);
   await fs.writeFile(f, s);

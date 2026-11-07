@@ -4,7 +4,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FrameSequence } from './frames.js';
-import { Clip } from './clip.js';
+import { FrameFilm } from './film-frames.js';
 import { countdown } from './api.js';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -80,7 +80,7 @@ function init() {
   setVideo();
 
 
-  // Continuous take (5.3): one scroll-scrubbed video. Falls back to the 5.2 stills + canvas when absent.
+  // Continuous take (5.4): scroll-scrubbed frame atlases on a canvas. Falls back to the 5.2 stills + canvas when absent.
   const C = cfg.clip; const clipEl = $('[data-clip]');
   const useClip = !!(C && clipEl);
   const seg = {};
@@ -90,8 +90,8 @@ function init() {
   function makeClip() {
     if (!useClip) return;
     clip?.destroy();
-    clipEl.poster = isMobile ? C.poster_mobile : C.poster_desktop;
-    clip = new Clip(clipEl, `${isMobile ? C.mobile : C.desktop}?v=${C.version}`);
+    clipEl.style.background = `#050a1a url(${isMobile ? C.poster_mobile : C.poster_desktop}) center/cover no-repeat`;
+    clip = new FrameFilm({ canvas: clipEl, base: isMobile ? C.mobile : C.desktop, frames: C.frames, fps: C.fps, cols: C.cols, rows: C.rows, version: C.version, cacheSize: isMobile ? 6 : 8 });
   }
   makeClip();
 
@@ -195,7 +195,7 @@ function init() {
       hub.style.visibility = 'hidden'; // the video carries the stadium; the hub layer only hosts the photo panels
       const V = (from, to, start, dur, ease = 'none') => tl.fromTo(vt, { t: from }, { t: to, duration: dur, ease, immediateRender: false }, start);
       const eps = 0.03;
-      // 2 Run-out: from the breathing loop's first frame, fly down the tunnel and out onto the pitch.
+      // 2 Run-out: number 20 runs out of the DIALI tunnel, then the drone follows him down it onto the pitch.
       const R = at.runout;
       tl.set(L('runout'), { opacity: 1 }, R.s); tl.set(L('breathe'), { opacity: 0 }, R.s + 0.01);
       V(0, seg.tunnel.e - eps, R.s, R.d);

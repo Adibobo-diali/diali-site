@@ -47,7 +47,7 @@ const tunnelCopy = {
       <!-- H2 walk-out canvas sequence -->
       <div class="layer layer--runout" data-layer="runout" aria-hidden="true">
         <canvas class="cover" data-canvas></canvas>
-        {film.clip && <video class="cover clip" data-clip muted playsinline preload="none" aria-hidden="true"></video>}
+        {film.clip && <canvas class="cover clip" data-clip aria-hidden="true"></canvas>}
       </div>
       <!-- H3 hub with the four tunnels -->
       <div class="layer layer--hub" data-layer="hub">

@@ -4,3 +4,8 @@ dist
 .wrangler
 .dev.vars
 preview-dist
+
+# Film frame atlases (~180 MB) are rebuilt from the clips with scripts/build-frames.sh.
+# Commit them once, when the final Seedance footage is approved, so the history stays small.
+public/film/home/
+public/film/conf/

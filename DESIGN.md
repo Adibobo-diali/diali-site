@@ -13,7 +13,9 @@ A dark, cinematic sports documentary: a stadium at night, the quiet before the w
 | white / muted | #fff / 72% | Body / secondary text |
 
 ## Type
-- Display and H1–H3: Cormorant Garamond 500/600 (only at 28 px and up).
+- Football first, premium finish (Adnan, 2026-11-07): display, H1–H3 and big numbers in Big Shoulders Display 700/800
+  (H1/H2/display uppercase, condensed like kit lettering). Cormorant Garamond italic 500 is kept for the human voice:
+  quotes, the doubt words, the breathing word, testimonials (28 px and up).
 - Everything else: Inter 400/500/600, 16 px body, line height 1.6.
 - Eyebrows: Inter caps, 0.18em tracking, gold.
 

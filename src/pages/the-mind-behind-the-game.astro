@@ -71,7 +71,7 @@ const confFilm = { questions: event.questions, doubt: event.doubt_words, clip: f
           </picture>
         </div>
       </div>
-      {film.conf_clip && <div class="layer" data-layer="cclip" aria-hidden="true"><video class="cover clip" data-clip muted playsinline preload="none"></video></div>}
+      {film.conf_clip && <div class="layer" data-layer="cclip" aria-hidden="true"><canvas class="cover clip" data-clip></canvas></div>}
       <div class="dip" data-dip aria-hidden="true"></div>
       <div class="bloom" data-bloom aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>

@@ -128,7 +128,7 @@ const roundNames = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final', 'Wi
     .slot { min-height: 40px; display: flex; align-items: center; padding: 8px 12px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.16); background: rgba(5,10,26,.5); font-size: .875rem; color: var(--muted); }
     .slot.is-filled { color: var(--white); border-color: var(--hairline); }
     .slot.is-won { border-color: var(--gold); background: rgba(217,180,90,.15); color: var(--ivory); font-weight: 600; }
-    .slot--winner { min-height: 64px; justify-content: center; font-family: var(--serif); font-size: 1.75rem; color: var(--gold-light); border-color: var(--gold); }
+    .slot--winner { min-height: 64px; justify-content: center; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 1.875rem; color: var(--gold-light); border-color: var(--gold); }
     @media (max-width: 860px) {
       .bracket { grid-template-columns: 1fr; }
       .bracket__round { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -2,7 +2,7 @@
 // → pull back over the hall → stay for the game (penalty on a screen in front of a teenager).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Clip } from './clip.js';
+import { FrameFilm } from './film-frames.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const root = document.querySelector('[data-film]');
@@ -61,7 +61,7 @@ function init() {
   const seg = {}; const vt = { t: 0 }; let clip = null;
   if (useClip) {
     let t0 = 0; C.segments.forEach((x) => { seg[x.id] = { s: t0, d: x.d, e: t0 + x.d }; t0 += x.d; });
-    clip = new Clip(clipEl, `${mobile() ? C.mobile : C.desktop}?v=${C.version}`);
+    clip = new FrameFilm({ canvas: clipEl, base: mobile() ? C.mobile : C.desktop, frames: C.frames, fps: C.fps, cols: C.cols, rows: C.rows, version: C.version, cacheSize: mobile() ? 6 : 8 });
   }
 
   function build() {

@@ -124,7 +124,7 @@ const stateConfig = { api: event.api_url, fallback: event.fallback_text, waitlis
       <div class="footer-top">
         <div class="stack">
           <a class="brand" href="/"><img src="/logo/diali-mark-white-128.png" alt="" width="40" height="27" /><span>DIALI <small>vzw</small></span></a>
-          <p class="serif" style="font-size:2rem;line-height:1.1;margin:12px 0 0">Seen. Ready. Chosen.</p>
+          <p class="h-display" style="font-size:2.25rem;margin:12px 0 0">Seen. Ready. Chosen.</p>
           <p class="muted">Youth sport, exposure, mindset and real opportunities.</p>
         </div>
         {past ? (
@@ -136,7 +136,7 @@ const stateConfig = { api: event.api_url, fallback: event.fallback_text, waitlis
         ) : (
           <div class="mini-event">
             <span class="eyebrow" style="margin:0">{event.date_label}</span>
-            <strong class="serif" style="font-size:1.75rem;line-height:1.1">{event.title}</strong>
+            <strong class="h-display" style="font-size:1.875rem">{event.title}</strong>
             <span class="muted small">{event.venue.name}, {event.venue.city} · Doors {event.doors} · Registration only · limited seats</span>
             <a class="btn btn--gold btn--small" style="justify-self:start;margin-top:8px" href="/seats">Reserve your seat</a>
           </div>

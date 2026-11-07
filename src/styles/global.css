@@ -1,5 +1,8 @@
 /* DIALI design system. Tokens documented in DESIGN.md and shown on /styleguide. */
+@import '@fontsource/big-shoulders-display/700';
+@import '@fontsource/big-shoulders-display/800';
 @import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/500-italic.css';
 @import '@fontsource/cormorant-garamond/600.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
@@ -18,13 +21,14 @@
   --danger: #ff9b8a;
   --ok: #9fe0b0;
 
+  --display: 'Big Shoulders Display', 'Arial Narrow', 'Roboto Condensed', sans-serif;
   --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* Fluid type scale (display → small). Cormorant only from 28px up. */
-  --fs-display: clamp(2.75rem, 1.6rem + 5.2vw, 6rem);
-  --fs-h1: clamp(2.25rem, 1.5rem + 3.4vw, 4.25rem);
-  --fs-h2: clamp(1.75rem, 1.3rem + 2.2vw, 3rem);
+  /* Fluid type scale (display → small). Headlines in the display face (condensed, so a touch larger). */
+  --fs-display: clamp(3rem, 1.7rem + 5.8vw, 6.75rem);
+  --fs-h1: clamp(2.5rem, 1.6rem + 3.8vw, 4.75rem);
+  --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.375rem);
   --fs-h3: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
   --fs-lead: clamp(1.0625rem, 1rem + .35vw, 1.3125rem);
   --fs-body: 1rem;
@@ -64,13 +68,16 @@ a { color: var(--gold-light); text-underline-offset: 3px; }
 a:hover { color: var(--ivory); }
 p { margin: 0 0 1em; }
 h1, h2, h3, h4 { margin: 0 0 .4em; font-weight: 500; line-height: 1.08; }
-.serif, h1, h2, .h-serif { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; }
+/* Headlines: matchday type. Uppercase, condensed, tight. .h-serif is the legacy name for a headline. */
+h1, h2, .h-serif, .h-display { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: .98; }
+/* The premium finish: Cormorant italic for the human voice. */
+.serif { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.005em; }
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
-h3 { font-family: var(--serif); font-size: var(--fs-h3); font-weight: 600; }
+h3 { font-family: var(--display); font-size: var(--fs-h3); font-weight: 700; letter-spacing: .01em; line-height: 1.05; }
 /* Headings below 28px use Inter. */
 h4, .h-small { font-family: var(--sans); font-size: 1.125rem; font-weight: 600; line-height: 1.3; letter-spacing: 0; }
-.display { font-size: var(--fs-display); line-height: 1; }
+.display { font-size: var(--fs-display); line-height: .95; }
 .lead { font-size: var(--fs-lead); color: var(--muted); line-height: 1.55; }
 .muted { color: var(--muted); }
 .small { font-size: var(--fs-small); }
@@ -134,13 +141,13 @@ h4, .h-small { font-family: var(--sans); font-size: 1.125rem; font-weight: 600; 
 
 /* ---------- Stat tile ---------- */
 .stat { padding: 20px 0; border-top: 1px solid var(--hairline); }
-.stat__n { font-family: var(--serif); font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem); line-height: 1; color: var(--gold-light); }
+.stat__n { font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 2.4rem + 2.4vw, 4.25rem); line-height: 1; color: var(--gold-light); }
 .stat__l { font-size: var(--fs-small); color: var(--muted); margin-top: 8px; }
 
 /* ---------- Quote block ---------- */
 .quote { position: relative; margin: 0; padding-top: 40px; }
 .quote::before { content: '“'; position: absolute; top: -18px; left: -4px; font: 600 5rem/1 var(--serif); color: var(--gold); }
-.quote p { font-family: var(--serif); font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); line-height: 1.2; color: var(--ivory); }
+.quote p { font-family: var(--serif); font-style: italic; font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); line-height: 1.2; color: var(--ivory); }
 .quote cite { display: block; font-style: normal; font-variant: small-caps; letter-spacing: .06em; color: var(--muted); font-size: 1rem; }
 
 /* ---------- Ticket card ---------- */
@@ -258,7 +265,7 @@ h4, .h-small { font-family: var(--sans); font-size: 1.125rem; font-weight: 600; 
 .mobile-menu.is-open { display: flex; }
 .mobile-menu__top { display: flex; justify-content: space-between; align-items: center; min-height: 56px; }
 .mobile-menu nav { display: flex; flex-direction: column; margin-top: 24px; }
-.mobile-menu nav a { font-family: var(--serif); font-size: 2rem; color: var(--white); text-decoration: none; min-height: 56px; display: flex; align-items: center; border-bottom: 1px solid rgba(217, 180, 90, .2); }
+.mobile-menu nav a { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; font-size: 2.25rem; color: var(--white); text-decoration: none; min-height: 56px; display: flex; align-items: center; border-bottom: 1px solid rgba(217, 180, 90, .2); }
 .mobile-menu__foot { margin-top: auto; padding-top: 28px; display: grid; gap: 16px; }
 
 /* ---------- Sticky mobile action bar ---------- */

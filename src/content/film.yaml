@@ -1,15 +1,20 @@
 # Homepage film timeline (free version 5.2). vh = scroll length on desktop, vhMobile on phones.
 # Swap in the continuous take (5.3) later by changing `version` and the beats; no code changes.
 version: continuous-5.3
-# Continuous take (5.3): one scroll-scrubbed video, cut from the Higgsfield clips by scripts/encode-film.sh.
-# Segment lengths are in seconds, in the order they sit in the video. Lite mode keeps the stills.
+# Continuous take (5.4): frame atlases drawn on a canvas (smooth both ways), cut from the clips by
+# scripts/build-frames.sh. Segment lengths are in seconds, in film order. Lite mode keeps the stills.
 clip:
-  desktop: /film/home-desktop.mp4
-  mobile: /film/home-mobile.mp4
+  desktop: /film/home/desktop
+  mobile: /film/home/mobile
+  frames: 962
+  fps: 12
+  cols: 3
+  rows: 2
   poster_desktop: /film/home-poster-desktop.jpg
   poster_mobile: /film/home-poster-mobile.jpg
-  version: "20261107"
+  version: "20261107b"
   segments:
+    - { id: runout,     d: 4.208 }
     - { id: tunnel,     d: 8.000 }
     - { id: hub,        d: 6.583 }
     - { id: workshop,   d: 6.583 }
@@ -24,9 +29,13 @@ clip:
 # Conference page continuous take: doors into the hall, push to the spotlit chair, back out,
 # doors close, then pull back out of the number 20 to the penalty taker (the FC 27 bridge).
 conf_clip:
-  desktop: /film/conf-desktop.mp4
-  mobile: /film/conf-mobile.mp4
-  version: "20261107"
+  desktop: /film/conf/desktop
+  mobile: /film/conf/mobile
+  frames: 412
+  fps: 12
+  cols: 3
+  rows: 2
+  version: "20261107b"
   segments:
     - { id: enter, d: 8.000 }
     - { id: push,  d: 6.583 }
