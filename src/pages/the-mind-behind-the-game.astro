@@ -5,7 +5,7 @@ import Faq from '../components/Faq.astro';
 import EUBlock from '../components/EUBlock.astro';
 import WaveBar from '../components/WaveBar.astro';
 import { getCollection } from 'astro:content';
-import { event, fc27, img, isTBC } from '../lib/site';
+import { event, fc27, film, img, isTBC } from '../lib/site';
 import '../styles/film.css';
 import '../styles/conference.css';
 
@@ -27,7 +27,7 @@ const jsonld = [
   },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: event.faq.filter((f) => !isTBC(f.a)).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 ];
-const confFilm = { questions: event.questions, doubt: event.doubt_words };
+const confFilm = { questions: event.questions, doubt: event.doubt_words, clip: film.conf_clip };
 ---
 <Base
   title="The Mind Behind the Game · Sun 20 Dec 2026 · Gentbrugge | DIALI"
@@ -71,6 +71,7 @@ const confFilm = { questions: event.questions, doubt: event.doubt_words };
           </picture>
         </div>
       </div>
+      {film.conf_clip && <div class="layer" data-layer="cclip" aria-hidden="true"><video class="cover clip" data-clip muted playsinline preload="none"></video></div>}
       <div class="dip" data-dip aria-hidden="true"></div>
       <div class="bloom" data-bloom aria-hidden="true"></div>
       <div class="scrim" aria-hidden="true"></div>
@@ -100,7 +101,7 @@ const confFilm = { questions: event.questions, doubt: event.doubt_words };
       ))}
       <div class="chapter chapter--voice" data-chapter="voice">
         <span class="eyebrow">The voices</span>
-        {first?.data.photo && <div class="voice-portrait chapter__body"><Img k={first.data.photo} alt={first.data.name} sizes="160px" /></div>}
+        {first?.data.photo && <div class="voice-portrait"><Img k={first.data.photo} alt={first.data.name} sizes="160px" eager /></div>}
         <h2 class="chapter__title">First voice confirmed: {first?.data.name ?? 'to be announced'}</h2>
         {first && <p class="chapter__body">{isTBC(first.data.line) ? <span class="tbc">{first.data.photo ? 'One line to confirm' : 'Photo and one line to confirm'}</span> : first.data.line}</p>}
         <p class="muted chapter__body" style="display:block">More voices to be announced.</p>
@@ -194,5 +195,5 @@ const confFilm = { questions: event.questions, doubt: event.doubt_words };
     import '../scripts/film-conference.js';
     import '../scripts/wavebar.js';
   </script>
-  <style>.voice-portrait{width:132px;height:132px;border-radius:50%;overflow:hidden;border:2px solid var(--gold,#d9b45a);margin-bottom:14px;display:block}.voice-portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}</style>
+  <style>.voice-portrait{width:132px;height:132px;border-radius:50%;overflow:hidden;border:2px solid var(--gold,#d9b45a);margin-bottom:14px;display:block}.voice-portrait :global(picture),.voice-portrait :global(img){display:block;width:100%;height:100%;object-fit:cover;object-position:50% 35%}</style>
 </Base>

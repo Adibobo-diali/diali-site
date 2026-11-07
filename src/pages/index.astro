@@ -15,7 +15,7 @@ const beat = (id: string) => film.beats.find((b: any) => b.id === id);
 const hub = img(film.hub.image);
 const photos = { workshop: beat('workshop').photo, tournaments: beat('tournaments').photo, scouting: beat('scouting').photo };
 const filmConfig = {
-  beats: film.beats, tunnels: T, hubAspect: film.hub.aspect, frames: film.frames.walkout,
+  beats: film.beats, tunnels: T, hubAspect: film.hub.aspect, frames: film.frames.walkout, clip: film.clip,
   start: event.start.toISOString(), past,
 };
 const tunnelCopy = {
@@ -47,6 +47,7 @@ const tunnelCopy = {
       <!-- H2 walk-out canvas sequence -->
       <div class="layer layer--runout" data-layer="runout" aria-hidden="true">
         <canvas class="cover" data-canvas></canvas>
+        {film.clip && <video class="cover clip" data-clip muted playsinline preload="none" aria-hidden="true"></video>}
       </div>
       <!-- H3 hub with the four tunnels -->
       <div class="layer layer--hub" data-layer="hub">

@@ -1,0 +1,11 @@
+v01-tunnel 8.000000
+v02-hub 6.584000
+v04-to-workshop 6.584000
+v08-open-workshop 5.167000
+v03-to-tournament 6.584000
+v07-open-tournament 5.167000
+v05-to-scouting 6.584000
+v09-open-scouting 5.167000
+v06-to-conference 8.000000
+v10-walkout 10.125000
+v11-ending 8.000000

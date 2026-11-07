@@ -2,6 +2,7 @@
 // → pull back over the hall → stay for the game (penalty on a screen in front of a teenager).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Clip } from './clip.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const root = document.querySelector('[data-film]');
@@ -54,6 +55,15 @@ function init() {
   }
   const kFill = () => Math.max(W / rect.w, H / rect.h);
 
+  // Continuous take for the hall and the FC 27 bridge (5.3); the 5.2 stills stay as the fallback.
+  const C = cfg.clip; const clipEl = root.querySelector('[data-clip]');
+  const useClip = !!(C && clipEl);
+  const seg = {}; const vt = { t: 0 }; let clip = null;
+  if (useClip) {
+    let t0 = 0; C.segments.forEach((x) => { seg[x.id] = { s: t0, d: x.d, e: t0 + x.d }; t0 += x.d; });
+    clip = new Clip(clipEl, `${mobile() ? C.mobile : C.desktop}?v=${C.version}`);
+  }
+
   function build() {
     tl?.kill(); st?.kill();
     measure();
@@ -67,7 +77,7 @@ function init() {
     const dip = $('[data-dip]'), bloom = $('[data-bloom]');
     Object.assign(cam, { x: 0.42, y: 0.36, s: 1 });
     hallK.k = kFill();
-    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: render });
+    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: () => { render(); if (clip) clip.set(vt.t); } });
     tl.set({}, {}, t);
     const chap = (id, s, d, a = 0.12, b = 0.82) => {
       const el = root.querySelector(`[data-chapter="${id}"]`); if (!el) return;
@@ -104,6 +114,22 @@ function init() {
     tl.set(L('stage'), { opacity: 1 }, SP.s + SP.d * 0.62); tl.set(L('mind'), { opacity: 0 }, SP.s + SP.d * 0.63);
     tl.set(hallK, { k: kFill() }, SP.s + SP.d * 0.62);
     tl.to(bloom, { opacity: 0, duration: SP.d * 0.38, ease: 'power1.out' }, SP.s + SP.d * 0.62);
+    if (useClip) {
+      // C4 the doors open onto the hall, then a slow push toward the spotlit chair (the first voice).
+      const VC = (from, to, start, dur, ease = 'none') => tl.fromTo(vt, { t: from }, { t: to, duration: dur, ease, immediateRender: false }, start);
+      const eps = 0.03; const V = at.voice; const P = at.pull; const Hl = at.hall; const F = at.fc27;
+      tl.set(L('cclip'), { opacity: 1 }, SP.s + SP.d * 0.62);
+      VC(seg.enter.s, seg.enter.e - eps, SP.s + SP.d * 0.62, SP.d * 0.38 + V.d * 0.3, 'sine.inOut');
+      VC(seg.push.s, seg.push.e - eps, V.s + V.d * 0.3, V.d * 0.7);
+      chap('voice', V.s, V.d, 0.35, 0.88);
+      // C5 back out up the aisle to the entrance, the doors close.
+      VC(seg.back.s, seg.back.e - eps, P.s, P.d + Hl.d * 0.2, 'sine.inOut');
+      chap('hall', Hl.s, Hl.d, 0.2, 0.7);
+      VC(seg.close.s, seg.close.e - eps, Hl.s + Hl.d * 0.55, Hl.d * 0.45, 'power1.in');
+      // C6 from the dark, pull back out of the number 20 to the penalty taker: then the game.
+      VC(seg.twenty.s, seg.twenty.e - eps, F.s, F.d * 0.65, 'sine.inOut');
+      chap('fc27', F.s, F.d, 0.55, 1);
+    } else {
     // C4 voices: slow push-in on the stage
     const V = at.voice;
     tl.fromTo(hallK, { k: kFill() }, { k: kFill() * 1.06, duration: V.d }, V.s);
@@ -119,6 +145,7 @@ function init() {
     tl.to(dip, { opacity: 0, duration: F.d * 0.08 }, F.s);
     tl.fromTo(fcwrap, { scale: isMobile ? 1.5 : 1.86, transformOrigin: isMobile ? '50% 35%' : '47.7% 37.3%' }, { scale: 1, duration: F.d * 0.6, ease: 'power2.inOut' }, F.s);
     chap('fc27', F.s, F.d, 0.45, 1);
+    } // end 5.2 path
     tl.call(() => root.querySelectorAll('img[loading=lazy]').forEach((i) => { i.loading = 'eager'; i.decode?.().catch(() => {}); }), null, M.s);
 
     st = ScrollTrigger.create({ trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, animation: tl, invalidateOnRefresh: true,

@@ -4,6 +4,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FrameSequence } from './frames.js';
+import { Clip } from './clip.js';
 import { countdown } from './api.js';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,10 +80,26 @@ function init() {
   setVideo();
 
 
+  // Continuous take (5.3): one scroll-scrubbed video. Falls back to the 5.2 stills + canvas when absent.
+  const C = cfg.clip; const clipEl = $('[data-clip]');
+  const useClip = !!(C && clipEl);
+  const seg = {};
+  if (useClip) { let t = 0; C.segments.forEach((x) => { seg[x.id] = { s: t, d: x.d, e: t + x.d }; t += x.d; }); }
+  const vt = { t: 0 };
+  let clip = null;
+  function makeClip() {
+    if (!useClip) return;
+    clip?.destroy();
+    clipEl.poster = `/film/home-poster-${isMobile ? 'mobile' : 'desktop'}.jpg?v=${C.version}`;
+    clip = new Clip(clipEl, `${isMobile ? C.mobile : C.desktop}?v=${C.version}`);
+  }
+  makeClip();
+
   // Canvas sequence
   const canvas = $('[data-canvas]');
   let seq = null;
   function makeSeq() {
+    if (useClip) return;
     seq?.destroy();
     const f = cfg.frames;
     seq = new FrameSequence({ base: isMobile ? f.mobile : f.desktop, count: f.count, version: f.version, canvas });
@@ -108,6 +125,7 @@ function init() {
     return { tx, ty, S };
   }
   function mouthRect(k) {
+    if (useClip) return { x: W * 0.44, y: H * 0.36, w: W * 0.12, h: H * 0.3 }; // the opening doors, centre frame
     const { tx, ty, S } = camT(); const t = T[k];
     return { x: tx + (t.x - t.w / 2) * hw * S, y: ty + (t.y - t.h / 2) * hh * S, w: t.w * hw * S, h: t.h * hh * S };
   }
@@ -126,6 +144,7 @@ function init() {
     el.style.width = r.w + 'px'; el.style.height = r.h + 'px';
   }
   function render() {
+    if (clip) clip.set(vt.t);
     const { tx, ty, S } = camT();
     hub.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${S})`;
     for (const [k, pn] of Object.entries(panels)) {
@@ -172,6 +191,56 @@ function init() {
     tl.fromTo($('[data-exit-glow]'), { opacity: 0 }, { opacity: 0.85, duration: B.d }, B.s);
     tl.to('[data-chapter="breathe"]', { opacity: 0, y: -16, duration: B.d * 0.25, ease: 'power2.in' }, B.s + B.d * 0.68);
 
+    if (useClip) {
+      hub.style.visibility = 'hidden'; // the video carries the stadium; the hub layer only hosts the photo panels
+      const V = (from, to, start, dur, ease = 'none') => tl.fromTo(vt, { t: from }, { t: to, duration: dur, ease, immediateRender: false }, start);
+      const eps = 0.03;
+      // 2 Run-out: from the breathing loop's first frame, fly down the tunnel and out onto the pitch.
+      const R = at.runout;
+      tl.set(L('runout'), { opacity: 1 }, R.s); tl.set(L('breathe'), { opacity: 0 }, R.s + 0.01);
+      V(0, seg.tunnel.e - eps, R.s, R.d);
+      // 3 Hub: glide over the centre circle to face the four tunnels.
+      const Hb = at.hub;
+      tl.set(L('hub'), { opacity: 1 }, Hb.s);
+      V(seg.hub.s, seg.hub.e - eps, Hb.s, Hb.d * 0.8, 'sine.inOut');
+      chap('hub', Hb.s, Hb.d, 0.15, 0.85);
+      // 4-7 Each tunnel: dive in, the doors open, the photo comes through; then rewind back out to the hub.
+      order.forEach((k, idx) => {
+        const A = at[k]; const D = seg[k]; const O = seg[k + 'O'];
+        const end = (O || D).e - eps;
+        V(D.s, end, A.s, A.d * 0.55, 'power1.inOut');
+        if (k === 'conferences') {
+          chap(k, A.s, A.d, 0.5, 0.92);
+        } else {
+          const pn = panels[k];
+          tl.fromTo(pn, { p: 0, o: 0 }, { p: 1, o: 1, duration: A.d * 0.3, ease: 'power2.out' }, A.s + A.d * 0.5);
+          tl.to(pn, { push: 1.08, duration: A.d * 0.2 }, A.s + A.d * 0.8);
+          chap(k, A.s, A.d, 0.55, 0.92);
+        }
+        const S = at[idx < 3 ? `spin${idx + 1}` : 'spinback'];
+        if (k !== 'conferences') tl.to(panels[k], { o: 0, p: 0.4, duration: S.d * 0.25, ease: 'power1.in' }, S.s);
+        V(end, D.s, S.s + S.d * 0.1, S.d * 0.8, 'power1.inOut');
+      });
+      const SB = at.spinback;
+      chap('spinback', SB.s, SB.d, 0.1, 0.7);
+      tl.to(dip, { opacity: 1, duration: SB.d * 0.15, ease: 'power1.in' }, SB.e - SB.d * 0.15);
+      // 9 Team: the walk-out, one by one, names landing in title order.
+      const Tm = at.team;
+      tl.to(dip, { opacity: 0, duration: Tm.d * 0.06 }, Tm.s);
+      V(seg.team.s, seg.team.e - eps, Tm.s, Tm.d * 0.92);
+      chap('team', Tm.s, Tm.d, 0.12, 0.86);
+      $$('[data-chapter="team"] .team-names li').forEach((li, i) => {
+        tl.fromTo(li, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: Tm.d * 0.06, ease: 'power2.out' }, Tm.s + Tm.d * (0.16 + i * 0.16));
+      });
+      tl.to(dip, { opacity: 1, duration: Tm.d * 0.06, ease: 'power1.in' }, Tm.e - Tm.d * 0.06);
+      // 10 Rise out of the stadium into the night; the sharp still takes over for the last chapter.
+      const E = at.ending;
+      tl.to(dip, { opacity: 0, duration: E.d * 0.08 }, E.s);
+      tl.set(L('hub'), { opacity: 0 }, E.s);
+      V(seg.ending.s, seg.ending.e - eps, E.s, E.d * 0.7, 'sine.out');
+      tl.fromTo(L('ending'), { opacity: 0 }, { opacity: 1, duration: E.d * 0.08, immediateRender: false }, E.s + E.d * 0.68);
+      chap('ending', E.s, E.d, 0.3, 1);
+    } else {
     // 2 Run-out: identical-frame cut into the canvas sequence, then a push-in toward the centre.
     const R = at.runout; const fr = { i: 0 };
     tl.set(L('runout'), { opacity: 1 }, R.s);
@@ -244,9 +313,11 @@ function init() {
     tl.fromTo(L('ending'), { scale: 1.28, yPercent: -6 }, { scale: 1, yPercent: 0, duration: E.d * 0.75, ease: 'sine.out' }, E.s);
     chap('ending', E.s, E.d, 0.3, 1);
 
+    } // end 5.2 path
+
     // Preload and decode the next layers ahead of time.
-    tl.call(() => seq.plan(0), null, B.s + B.d * 0.5);
-    tl.call(() => root.querySelectorAll('[data-layer="hub"] img, [data-photo] img').forEach((i) => i.decode?.().catch(() => {})), null, R.s + R.d * 0.5);
+    tl.call(() => seq?.plan(0), null, B.s + B.d * 0.5);
+    tl.call(() => root.querySelectorAll('[data-layer="hub"] img, [data-photo] img').forEach((i) => i.decode?.().catch(() => {})), null, at.runout.s + at.runout.d * 0.5);
     tl.call(() => root.querySelectorAll('[data-layer="team"] img, [data-layer="ending"] img').forEach((i) => { i.loading = 'eager'; i.decode?.().catch(() => {}); }), null, at.scouting.s);
 
     st = ScrollTrigger.create({
@@ -262,14 +333,14 @@ function init() {
   build();
 
   // Keep the first frame ready before the cut; the poster stays visible meanwhile.
-  seq.preload(0);
+  seq?.preload(0);
 
   let rt;
   addEventListener('resize', () => {
     clearTimeout(rt);
     rt = setTimeout(() => {
       const m = mobile();
-      if (m !== isMobile) { isMobile = m; setVideo(); makeSeq(); }
+      if (m !== isMobile) { isMobile = m; setVideo(); makeSeq(); makeClip(); }
       const p = st?.progress || 0; build(); ScrollTrigger.refresh(); measure(); render();
       if (p) st.scroll(st.start + (st.end - st.start) * p);
     }, 150);

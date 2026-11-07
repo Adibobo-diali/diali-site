@@ -1,0 +1,5 @@
+c13-doors-to-hall 8.000000
+c14-hall-push 6.584000
+c15-hall-back 6.584000
+c16-doors-close 5.167000
+c01-twenty-penalty 8.000000

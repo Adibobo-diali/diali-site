@@ -113,3 +113,6 @@ html:not(.js) .chapter--team, .lite .chapter--team { width: auto; }
 .proof-quotes__bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); }
 .proof-quotes::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--ink), rgba(5, 10, 26, .4) 40%, var(--ink)); pointer-events: none; }
 .proof-quotes .wrap { z-index: 1; }
+
+/* Continuous take: the scrubbed video sits under the hub layer's photo panels */
+.clip { background: var(--ink); }
