@@ -47,7 +47,7 @@ for (const f of files) {
   if (!/\.(html|js|css|json)$/.test(f)) continue;
   let s = (await fs.readFile(f, 'utf8')).replace(/_astro\//g, 'assets/');
   if (f.endsWith('.html')) {
-    s = s.replace(/<source type="image\/avif"[^>]*>/g, '');
+    s = s.replace(/<source[^>]*type="image\/avif"[^>]*>/g, '');
     s = s.replace(ATTR, (_, a, u) => a + fixUrl(u) + '"');
     s = s.replace(SRCSET, (_, a, v) => a + v.split(',').map((x) => { const t = x.trim(); return t.startsWith('/') ? fixUrl(t.split(' ')[0]) + (t.includes(' ') ? ' ' + t.split(' ').slice(1).join(' ') : '') : t; }).join(', ') + '"');
     const rel = path.relative(out, path.dirname(f)).replace(/\\/g, '/');
