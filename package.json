@@ -1,0 +1,24 @@
+{
+  "name": "diali-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "media": "node scripts/build-media.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "astro": "^5.18.2",
+    "gsap": "^3.15.1",
+    "sharp": "^0.35.5",
+    "yaml": "^2.9.1"
+  },
+  "type": "module"
+}

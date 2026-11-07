@@ -1,0 +1,20 @@
+---
+import EUBlock from './EUBlock.astro';
+import { event } from '../lib/site';
+const past = event.mode === 'past';
+---
+<section class="section section--navy" aria-labelledby="sfs-h">
+  <div class="wrap grid grid-2" style="align-items:center">
+    <div>
+      <span class="eyebrow">Sport for Solidarity</span>
+      <h2 id="sfs-h">One plan, three steps.</h2>
+      <p class="lead">Co-funded by the European Solidarity Corps, with JINT. JINT approved this plan.</p>
+      <ol class="timeline" style="margin-top:28px">
+        <li class="done"><strong>Workshop ✓</strong><span>Spot The Spark · 20+ young people</span></li>
+        <li class={past ? 'done' : 'now'}><strong>Conference{past ? ' ✓' : ''}</strong><span>The Mind Behind the Game · 20 Dec 2026</span></li>
+        <li class={past ? 'done' : ''}><strong>FC 27 tournament{past ? ' ✓' : ''}</strong><span>Straight after the conference</span></li>
+      </ol>
+    </div>
+    <EUBlock />
+  </div>
+</section>

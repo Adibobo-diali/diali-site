@@ -1,0 +1,13 @@
+---
+// Sport for Solidarity visibility block. Wording follows the standard EU "Co-funded by the European Union"
+// statement and disclaimer for European Solidarity Corps projects. TO CONFIRM against JINT's visibility rules.
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class="eu-block">
+  <img class="eu-emblem" src="/brand/eu-cofunded.svg" alt="Co-funded by the European Union" width="180" height="34" loading="lazy" />
+  <div>
+    <p><strong>Sport for Solidarity</strong> is co-funded by the European Solidarity Corps, with JINT.</p>
+    {!compact && <p style="margin-top:6px">Co-funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or JINT. Neither the European Union nor the granting authority can be held responsible for them.</p>}
+  </div>
+</div>

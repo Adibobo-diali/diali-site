@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { EMAIL } from '../lib/site';
+---
+<Base title="Contact · Ask us anything | DIALI" description="Questions about DIALI vzw, our programmes or The Mind Behind the Game? Ask us anything.">
+  <section class="section" style="padding-top:calc(var(--header-h) + 56px)">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h1>Ask us anything.</h1>
+        <p class="lead"><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
+        <p class="muted">Registered in Aalst · Reg. no. 1013473618</p>
+        <p><a class="link-arrow" href="/become-a-sponsor/partner">Partnerships</a><br /><a class="link-arrow" href="/the-mind-behind-the-game#faq-h">Booking question? See the FAQ</a></p>
+      </div>
+      <ContactForm source="contact" />
+    </div>
+  </section>
+</Base>

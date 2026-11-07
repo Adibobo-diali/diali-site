@@ -1,0 +1,157 @@
+# Pages CMS (https://pagescms.org): Adnan edits content in the browser. Fields are typed and validated;
+# a failed build never goes live because Cloudflare Pages keeps the last good deployment.
+media:
+  input: media-src
+  output: /media
+content:
+  - name: event
+    label: Conference (event.yaml)
+    type: file
+    path: src/content/event.yaml
+    fields:
+      - { name: mode, label: Mode, type: select, options: { values: [upcoming, past] } }
+      - { name: title, label: Title, type: string }
+      - { name: date_label, label: Date label, type: string }
+      - { name: date_chip, label: Date chip on the homepage, type: string }
+      - { name: start, label: Start, type: string, description: "ISO, e.g. 2026-12-20T10:30:00+01:00" }
+      - { name: end, label: End, type: string }
+      - { name: doors, label: Doors, type: string }
+      - { name: programme_label, label: Programme, type: string }
+      - name: venue
+        type: object
+        fields:
+          - { name: name, type: string }
+          - { name: street, type: string }
+          - { name: postcode, type: string }
+          - { name: city, type: string }
+          - { name: maps, type: string }
+      - { name: language, type: string }
+      - name: waves
+        type: object
+        list: true
+        fields:
+          - { name: n, label: Wave, type: number }
+          - { name: opens, label: Opens at, type: string }
+          - { name: rows, label: Rows label, type: string }
+          - { name: last_row, label: Last open row, type: select, options: { values: [B, C, D, E, F, G] } }
+      - { name: fallback_text, label: Fallback text when the live count is unavailable, type: string }
+      - { name: waitlist_text, type: string }
+      - { name: audience, type: string }
+      - name: questions
+        type: object
+        list: { min: 4, max: 4 }
+        fields:
+          - { name: title, type: string }
+          - { name: text, type: text }
+      - name: faq
+        type: object
+        list: true
+        fields:
+          - { name: q, label: Question, type: string }
+          - { name: a, label: Answer, type: text }
+  - name: speakers
+    label: Speakers
+    type: collection
+    path: src/content/speakers
+    fields:
+      - { name: name, type: string, required: true }
+      - { name: line, label: One line, type: string }
+      - { name: photo, type: image }
+      - { name: chair, label: Chair on stage (1-4), type: number }
+      - { name: published, label: Published, type: boolean }
+      - { name: order, type: number }
+  - name: fc27
+    label: FC 27 (fc27.yaml)
+    type: file
+    path: src/content/fc27.yaml
+    fields:
+      - { name: waitlist_form, label: Waiting list form link, type: string }
+      - { name: prize_text, type: string }
+      - { name: prize_partner_confirmed, label: Prize partner confirmed, type: boolean }
+      - { name: format_details, type: string }
+      - name: faq
+        type: object
+        list: true
+        fields: [{ name: q, type: string }, { name: a, type: text }]
+  - name: home
+    label: Homepage (home.yaml)
+    type: file
+    path: src/content/home.yaml
+    fields:
+      - { name: h1, type: string }
+      - { name: mission, type: text }
+      - { name: vision_line, type: text }
+      - { name: proof, type: string, list: true }
+      - { name: past_mode_title, type: string }
+  - name: news
+    label: News
+    type: collection
+    path: src/content/news
+    filename: "{fields.title}.md"
+    fields:
+      - { name: title, type: string, required: true }
+      - { name: date, type: date, required: true }
+      - { name: photo, label: Photo key (e.g. photos/spot-the-spark-room), type: string }
+      - { name: photo_is_ai, label: Photo is an AI illustration, type: boolean }
+      - { name: featured, type: boolean }
+      - { name: excerpt, type: text }
+      - { name: body, type: rich-text }
+  - name: events
+    label: Events
+    type: collection
+    path: src/content/events
+    fields:
+      - { name: title, type: string }
+      - { name: kind, type: string }
+      - { name: date, type: date }
+      - { name: date_label, type: string }
+      - { name: place, type: string }
+      - { name: photo, type: string }
+      - { name: gallery, type: string, list: true }
+      - { name: facts, type: string, list: true }
+      - { name: summary, type: text }
+      - { name: order, type: number }
+      - { name: body, type: rich-text }
+  - name: programmes
+    label: Programmes
+    type: collection
+    path: src/content/programmes
+    fields:
+      - { name: title, type: string }
+      - { name: what, type: text }
+      - { name: who, type: string }
+      - { name: proof, type: string }
+      - { name: photo, type: string }
+  - name: partners
+    label: Partners
+    type: collection
+    path: src/content/partners
+    fields:
+      - { name: name, type: string }
+      - { name: logo, type: string }
+      - { name: type, type: string }
+      - { name: approved, label: Approved to show, type: boolean }
+      - { name: order, type: number }
+  - name: team
+    label: Team
+    type: collection
+    path: src/content/team
+    fields:
+      - { name: name, type: string }
+      - { name: role, type: string }
+      - { name: photo, type: string }
+      - { name: order, type: number }
+      - { name: body, label: Short bio, type: text }
+  - name: film
+    label: Homepage film timing (film.yaml)
+    type: file
+    path: src/content/film.yaml
+    fields:
+      - name: beats
+        type: object
+        list: true
+        fields:
+          - { name: id, type: string }
+          - { name: vh, label: Desktop length (vh), type: number }
+          - { name: vhMobile, label: Phone length (vh), type: number }
+          - { name: photo, type: string }

@@ -1,0 +1,10 @@
+name = "dialivzw-site"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+# KV for rate limits and idempotency keys. Create with: npx wrangler kv namespace create DIALI_KV
+# [[kv_namespaces]]
+# binding = "DIALI_KV"
+# id = "TO CONFIRM"
+
+# Secrets (set with `npx wrangler pages secret put NAME`): APPS_SCRIPT_URL, APPS_SCRIPT_SECRET, TURNSTILE_SECRET, ADMIN_EMAILS

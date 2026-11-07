@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Img from '../components/Img.astro';
+import Faq from '../components/Faq.astro';
+const colors = [
+  ['ink', '#050a1a', 'Page background, the dip colour'], ['navy', '#0b1530', 'Panels, bands'], ['gold', '#d9b45a', 'Actions, eyebrows'],
+  ['light gold', '#f2d98a', 'Focus ring, highlights'], ['ivory', '#fff4d8', 'Warm text on photos'], ['white', '#ffffff', 'Body text'], ['muted', 'rgba(255,255,255,.72)', 'Secondary text'],
+];
+const grades = ['home_02_stadium_from_tunnel', 'home_03_four_tunnels_hub', 'home_06_centre_circle_ending'];
+---
+<Base title="Style tile | DIALI" description="DIALI design tokens and components." noindex hideBar>
+  <section class="section" style="padding-top:calc(var(--header-h) + 48px)">
+    <div class="wrap">
+      <span class="eyebrow">Style tile · not indexed</span>
+      <h1>DIALI design system</h1>
+      <p class="lead" style="max-width:60ch">A dark, premium, cinematic sports documentary. Calm confidence, a stadium at night, the quiet before walking out.</p>
+
+      <h2 style="margin-top:56px">Logo</h2>
+      <div class="row" style="gap:24px">
+        <div class="glass" style="padding:28px"><img src="/logo/diali-mark-white.png" alt="DIALI logo, white" width="160" /></div>
+        <div class="glass" style="padding:28px"><img src="/logo/diali-mark-gold.png" alt="DIALI logo, gold" width="160" /></div>
+      </div>
+      <p class="small muted">Taken from the current site as supplied; only the black background was made transparent. Never redrawn.</p>
+
+      <h2 style="margin-top:56px">Colour</h2>
+      <div class="grid grid-4">
+        {colors.map(([n, v, u]) => <div><div style={`height:96px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:${v}`}></div><p style="margin:8px 0 0;font-weight:600">{n}</p><p class="small muted" style="margin:0">{v} · {u}</p></div>)}
+      </div>
+
+      <h2 style="margin-top:56px">Type</h2>
+      <p class="display" style="margin:0">Seen. Ready. Chosen.</p>
+      <p class="h-serif" style="margin:0;font-size:var(--fs-h1);line-height:1.08">H1 · Cormorant Garamond 500</p>
+      <h2 style="margin:0">H2 · The game is won here first.</h2>
+      <h3>H3 · Cormorant 600, 28px and up only</h3>
+      <h4>H4 · Inter 600 for headings below 28px</h4>
+      <p class="lead">Lead · Inter 400. DIALI harnesses the power of sport to empower youth.</p>
+      <p>Body · Inter 400, 16px, line height 1.6. Short sentences. Every claim carries a number, a name or a date.</p>
+      <span class="eyebrow">Eyebrow · Inter caps, 0.18em, gold</span>
+
+      <h2 style="margin-top:56px">Buttons, links, chip</h2>
+      <div class="row">
+        <a class="btn btn--gold" href="#">Reserve your seat</a>
+        <a class="btn btn--outline" href="#">Partner with us</a>
+        <a class="link-arrow" href="#">Text link</a>
+        <span class="chip">Sun 20 Dec · De Felix, Gentbrugge</span>
+      </div>
+
+      <h2 style="margin-top:56px">Panels and data</h2>
+      <div class="grid grid-3">
+        <div class="glass"><h4>Glass panel</h4><p class="muted" style="margin:0">Navy 70%, 1px gold hairline, blur.</p></div>
+        <div class="stat"><div class="stat__n">20+</div><div class="stat__l">young people at Spot The Spark</div></div>
+        <blockquote class="quote"><p>A real pathway, never a promise.</p><cite>Quote attribution</cite></blockquote>
+      </div>
+
+      <h2 style="margin-top:56px">Ticket card</h2>
+      <div class="ticket" style="max-width:720px">
+        <div class="ticket__main"><span class="eyebrow" style="margin:0">The Mind Behind the Game</span><p class="h-serif" style="font-size:2rem;margin:6px 0 0">You're in. Row D, seat 7.</p><dl><dt>Date</dt><dd>Sun 20 Dec 2026</dd><dt>Doors</dt><dd>10:00</dd></dl></div>
+        <div class="ticket__stub"><span class="eyebrow" style="margin:0">Seat</span><span class="stat__n">D7</span></div>
+      </div>
+
+      <h2 style="margin-top:56px">Timeline</h2>
+      <ol class="timeline"><li class="done"><strong>Workshop ✓</strong><span>20+ young people</span></li><li class="now"><strong>Conference</strong><span>20 Dec 2026</span></li><li><strong>FC 27 tournament</strong><span>After the conference</span></li></ol>
+
+      <h2 style="margin-top:56px">Programme card and photo treatment</h2>
+      <div class="grid grid-2">
+        <a class="card" href="#"><Photo k="photos/spot-the-spark-room" alt="Workshop participants" /><span class="eyebrow" style="margin:0">Talent Identification & Development</span><h4>Workshops with direct access to scouts.</h4></a>
+        <div><p class="muted">Real photos: saturation 0.85, a navy gradient over the bottom 40%, the shared 4% grain, 6px radius.</p></div>
+      </div>
+
+      <h2 style="margin-top:56px">Form fields</h2>
+      <div class="form" style="max-width:480px">
+        <div class="field"><label for="sg1">Email</label><input class="input" id="sg1" value="name@" aria-invalid="true" /><p class="error">Please enter a valid email address, like name@example.com.</p></div>
+        <label class="check"><input type="checkbox" checked /><span>I'm 13 or older, or a parent is booking for me</span></label>
+      </div>
+
+      <h2 style="margin-top:56px">FAQ accordion</h2>
+      <Faq items={[{ q: 'Do I need to register?', a: 'Yes. Registration only, limited seats.' }]} />
+
+      <h2 style="margin-top:56px">Colour grade · before / after</h2>
+      <p class="muted">Black point #050a1a, highlights toward #f2d98a, greens −25%. Posters and hand-off stills come from the decoded video frames.</p>
+      <div class="grid" style="gap:12px">
+        {grades.map((g) => (
+          <div class="grid grid-2" style="gap:12px">
+            <figure style="margin:0"><img src={`/styleguide/before_${g}.jpg`} alt="" loading="lazy" style="border-radius:6px" /><figcaption class="small muted">Before</figcaption></figure>
+            <figure style="margin:0"><Img k={`film/${g}`} alt="" sizes="50vw" /><figcaption class="small muted">After</figcaption></figure>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

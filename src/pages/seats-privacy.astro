@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { EMAIL } from '../lib/site';
+---
+<Base title="Booking privacy · The Mind Behind the Game | DIALI" description="What happens to your booking data for The Mind Behind the Game." hideBar>
+  <article class="section" style="padding-top:calc(var(--header-h) + 56px)">
+    <div class="wrap narrow prose">
+      <span class="eyebrow">The Mind Behind the Game</span>
+      <h1 style="font-size:var(--fs-h2)">Your booking data</h1>
+      <ul>
+        <li><strong>What:</strong> your email, your name, first names for extra seats, your seats, FC 27 sign-ups (and under 16 or not), language and club code if any.</li>
+        <li><strong>Why:</strong> to hold your seat, send your confirmation, the 13 Dec "Still coming?" email and the 19 Dec reminder, and check you in at the door.</li>
+        <li><strong>Who sees it:</strong> the DIALI team. It is stored in Google Sheets and emails are sent through Resend.</li>
+        <li><strong>Newsletter:</strong> only if you ticked the box.</li>
+        <li><strong>Deleted on:</strong> 20 January 2027.</li>
+        <li><strong>Age:</strong> 13 or older, or a parent books for you.</li>
+      </ul>
+      <p>Questions or a deletion request: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. Full details in our <a href="/privacy">privacy notice</a>.</p>
+    </div>
+  </article>
+  <style is:global>.prose h2{font-size:var(--fs-h3);margin-top:1.6em}.prose li{margin-bottom:.6em}</style>
+</Base>

@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import ShareBlock from '../components/ShareBlock.astro';
+import { fc27, event, isTBC, img } from '../lib/site';
+const jsonld = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: fc27.faq.filter((f) => !isTBC(f.a)).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }];
+const rounds = [16, 8, 4, 2, 1];
+const roundNames = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final', 'Winner'];
+---
+<Base
+  title="FC 27 tournament · Sun 20 Dec 2026 · Gentbrugge | DIALI"
+  description="16 players, knockout, one winner. Straight after The Mind Behind the Game, Sun 20 Dec 2026, De Felix, Gentbrugge. Only attendees who check in can play."
+  og="/og/fc27.jpg"
+  jsonld={jsonld}
+>
+  <section class="banner fc-hero" data-hero>
+    <div class="banner__img">
+      <picture>
+        <source media="(max-width: 760px)" type="image/webp" srcset={img('film/conf_06_fc27_reveal_mobile').webp} sizes="100vw" />
+        <source type="image/avif" srcset={img('film/conf_06_fc27_reveal_desktop').avif} sizes="100vw" />
+        <img src={img('film/conf_06_fc27_reveal_desktop').src} srcset={img('film/conf_06_fc27_reveal_desktop').webp} sizes="100vw" alt="" width="1920" height="1072" fetchpriority="high" />
+      </picture>
+    </div>
+    <div class="wrap">
+      <span class="eyebrow">{event.date_label} · Gentbrugge</span>
+      <h1>{fc27.title}</h1>
+      <p class="lead" style="max-width:52ch">{fc27.sub}</p>
+      <div class="row">
+        <a class="btn btn--gold" href={fc27.waitlist_form} target="_blank" rel="noopener" data-cta="fc27-waitlist">Join the waiting list</a>
+        <a class="btn btn--outline" href="/seats">Reserve your conference seat</a>
+      </div>
+      <p class="small muted" style="margin-top:12px;max-width:56ch">{fc27.no_guarantee}</p>
+      <p class="ai-note">Illustration, not a real DIALI event.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-h">
+    <div class="wrap">
+      <span class="eyebrow">How it works</span>
+      <h2 id="how-h">Four steps to the controller.</h2>
+      <ol class="steps grid grid-4">
+        <li class="glass"><span class="stat__n">1</span><h4>Reserve a conference seat.</h4><p class="muted small">Only attendees can play.</p><a class="link-arrow" href="/seats">Reserve</a></li>
+        <li class="glass"><span class="stat__n">2</span><h4>Sign up to play.</h4><p class="muted small">Tick "I want to play FC 27" when you book your seat, or join the waiting list (name, email, and whether you are under 16).</p></li>
+        <li class="glass"><span class="stat__n">3</span><h4>Check in on the day.</h4><p class="muted small">The {fc27.places} places go to signed-up players who check in.</p></li>
+        <li class="glass"><span class="stat__n">4</span><h4>Play.</h4><p class="muted small">Knockout, one winner.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--navy" id="bracket" aria-labelledby="bracket-h">
+    <div class="wrap">
+      <div class="row" style="justify-content:space-between;align-items:end">
+        <div>
+          <span class="eyebrow">Live bracket</span>
+          <h2 id="bracket-h">{fc27.places} places.</h2>
+        </div>
+        <p class="lead" style="margin:0" aria-live="polite" data-bracket-count>{fc27.places} places</p>
+      </div>
+      <div class="bracket" data-bracket role="list" aria-label="Tournament bracket">
+        {rounds.map((n, r) => (
+          <div class="bracket__round" role="listitem" aria-label={roundNames[r]}>
+            <p class="eyebrow" style="margin:0 0 6px">{roundNames[r]}</p>
+            {Array.from({ length: n }).map((_, i) => <div class={`slot ${r === 4 ? 'slot--winner' : ''}`} data-slot={`${r}-${i}`}>{r === 4 ? 'Winner' : '–'}</div>)}
+          </div>
+        ))}
+      </div>
+      <p class="small muted" style="margin-top:14px">Names show as first name and initial, or a nickname chosen at check-in. The bracket updates every 15 seconds on the day.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="rules-h">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Rules</span>
+        <h2 id="rules-h">Simple, and fair.</h2>
+        <ul class="rules">
+          <li>{fc27.places} players · knockout</li>
+          <li>Check-in required</li>
+          <li>The winner must be present to receive the prize: {fc27.prize_text}</li>
+          <li>Players under 16 need a parent or guardian's permission, given at check-in</li>
+          <li>Match length, settings, controllers: <span class="tbc">To confirm</span></li>
+        </ul>
+        <p class="lead" style="margin-top:28px"><strong>Why a game at a mindset conference?</strong> {fc27.why}</p>
+      </div>
+      <div class="stack">
+        <ShareBlock />
+        {!fc27.prize_partner_confirmed && (
+          <a class="glass card" href="/become-a-sponsor/partner?type=Sponsorship#form" style="display:block">
+            <span class="eyebrow">Prize partner wanted</span>
+            <h4>Put your name on the prize.</h4>
+            <span class="link-arrow">Partner with us</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy" aria-labelledby="fcfaq-h">
+    <div class="wrap narrow">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="fcfaq-h">Before you play.</h2>
+      <Faq items={fc27.faq} />
+      <div class="row" style="margin-top:32px">
+        <a class="btn btn--gold" href={fc27.waitlist_form} target="_blank" rel="noopener">Join the waiting list</a>
+        <a class="btn btn--outline" href="/the-mind-behind-the-game">About the conference</a>
+      </div>
+      <p class="small muted" style="margin-top:12px">{fc27.no_guarantee}</p>
+      <p class="small muted">FC 27 tournament is a console football tournament organised by DIALI vzw. Not affiliated with any game publisher.</p>
+    </div>
+  </section>
+
+  <style>
+    .fc-hero { min-height: min(86svh, 760px); }
+    .steps { list-style: none; padding: 0; margin: 28px 0 0; }
+    .steps li { display: grid; gap: 8px; align-content: start; }
+    .steps h4 { margin: 0; }
+    .rules { padding-left: 1.2em; display: grid; gap: 10px; }
+    .rules li::marker { color: var(--gold); }
+    .bracket { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+    .bracket__round { display: flex; flex-direction: column; justify-content: space-around; gap: 6px; }
+    .slot { min-height: 40px; display: flex; align-items: center; padding: 8px 12px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.16); background: rgba(5,10,26,.5); font-size: .875rem; color: var(--muted); }
+    .slot.is-filled { color: var(--white); border-color: var(--hairline); }
+    .slot.is-won { border-color: var(--gold); background: rgba(217,180,90,.15); color: var(--ivory); font-weight: 600; }
+    .slot--winner { min-height: 64px; justify-content: center; font-family: var(--serif); font-size: 1.75rem; color: var(--gold-light); border-color: var(--gold); }
+    @media (max-width: 860px) {
+      .bracket { grid-template-columns: 1fr; }
+      .bracket__round { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bracket__round > .eyebrow { grid-column: 1 / -1; }
+    }
+  </style>
+  <script>
+    import { fc27State } from '../scripts/api.js';
+    const SHOW_FROM = 8;
+    async function run() {
+      const s = await fc27State();
+      if (!s || s.error) return;
+      const c = document.querySelector('[data-bracket-count]');
+      if (c) c.textContent = s.count >= SHOW_FROM ? `${s.count} signed up for 16 places` : '16 places';
+      (s.rounds || []).forEach((round, r) => (round || []).forEach((name, i) => {
+        const el = document.querySelector(`[data-slot="${r}-${i}"]`);
+        if (el && name) { el.textContent = name; el.classList.add('is-filled'); }
+        const nxt = s.rounds[r + 1];
+        if (el && name && nxt && nxt[Math.floor(i / 2)] === name) el.classList.add('is-won');
+      }));
+      const last = s.rounds?.[4]?.[0] || (s.rounds?.[3] && s.rounds[4]?.[0]);
+      if (last) { const w = document.querySelector('[data-slot="4-0"]'); w.textContent = `${last} · a prize for the winner`; }
+    }
+    run(); setInterval(() => !document.hidden && run(), 15000);
+    // Count arrivals from a shared challenge.
+    if (new URLSearchParams(location.search).get('ref') === 'share') { try { navigator.sendBeacon?.('/api/track', JSON.stringify({ e: 'share_arrival', p: '/fc27' })); } catch {} }
+  </script>
+</Base>

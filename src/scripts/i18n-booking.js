@@ -1,0 +1,55 @@
+// Booking-flow strings in EN / NL / FR. NL and FR need a native review before launch (TO CONFIRM).
+export const STR = {
+  en: {
+    title: 'Choose your seat', stage: 'Stage', reserved: 'Reserved for guests', best: 'Best available', seats: 'seats', seat: 'seat',
+    selected: 'Selected', none: 'No seats selected yet.', remove: 'Remove', row: 'Row', available: 'available', taken: 'taken', closed: 'opens later',
+    listAlt: 'Choose from a list instead', addSeat: 'Add seat', details: 'Your details', email: 'Email', yourName: 'Your name',
+    guest: 'First name, seat', consent: "I'm 13 or older, or a parent is booking for me", news: 'Keep me posted about future DIALI events',
+    fcPlay: 'I want to play FC 27', fcU16: "I'm under 16", fcNote: 'Signing up does not guarantee a place. The 16 places go to registered attendees who check in on the day.',
+    confirm: 'Confirm my seats', holding: 'Holding your seats…', maxNote: 'Up to 4 seats per booking, 6 per email.',
+    errName: 'Please tell us your name.', errEmail: 'Please enter a valid email address, like name@example.com.', errGuest: 'Please add a first name for this seat.', errConsent: 'Please confirm this to book.', errSeats: 'Choose at least one seat.',
+    errTaken: 'Someone just took {seats}. Pick another; the rest of your selection is kept.', errCap: 'This email already has {n} seats. The limit is 6 per email.', errClosed: 'Those rows are not open yet.',
+    errNet: 'We could not reach the booking system. Your seats are not booked yet.', retry: 'Try again', errMail: 'Or email us at',
+    errTimeout: 'This is taking too long. Your seats may not be booked. Try again, or check your email for a confirmation first.',
+    waveNotOpen: 'Wave {n} opens in {t}', notify: 'Email me when it opens', waveFull: 'Wave {n} is full. Wave {m} opens in {t}.',
+    allFull: 'All seats are taken. Join the waitlist and we will email you if a seat comes free.', waitlistOnly: 'Booking is now waitlist-only. Join the waitlist and we will email you if a seat comes free.',
+    over: 'The Mind Behind the Game has taken place. Thank you to everyone who came.', join: 'Join the waitlist', howMany: 'How many seats?', sent: 'Done. We will email you.',
+    demo: 'Preview: bookings are simulated in your browser. Nothing is sent and nobody is emailed.', lang: 'Language',
+  },
+  nl: {
+    title: 'Kies je plaats', stage: 'Podium', reserved: 'Gereserveerd voor gasten', best: 'Beste beschikbare', seats: 'plaatsen', seat: 'plaats',
+    selected: 'Gekozen', none: 'Nog geen plaatsen gekozen.', remove: 'Verwijder', row: 'Rij', available: 'vrij', taken: 'bezet', closed: 'opent later',
+    listAlt: 'Kies liever uit een lijst', addSeat: 'Plaats toevoegen', details: 'Jouw gegevens', email: 'E-mail', yourName: 'Je naam',
+    guest: 'Voornaam, plaats', consent: 'Ik ben 13 of ouder, of een ouder boekt voor mij', news: 'Hou me op de hoogte van volgende DIALI-events',
+    fcPlay: 'Ik wil FC 27 spelen', fcU16: 'Ik ben jonger dan 16', fcNote: 'Inschrijven garandeert geen plaats. De 16 plaatsen gaan naar ingeschreven deelnemers die op de dag inchecken.',
+    confirm: 'Bevestig mijn plaatsen', holding: 'We houden je plaatsen vast…', maxNote: 'Maximaal 4 plaatsen per boeking, 6 per e-mailadres.',
+    errName: 'Vul je naam in.', errEmail: 'Vul een geldig e-mailadres in, zoals naam@voorbeeld.be.', errGuest: 'Vul een voornaam in voor deze plaats.', errConsent: 'Bevestig dit om te boeken.', errSeats: 'Kies minstens één plaats.',
+    errTaken: 'Iemand nam net {seats}. Kies een andere; de rest van je keuze blijft staan.', errCap: 'Dit e-mailadres heeft al {n} plaatsen. Het maximum is 6 per e-mailadres.', errClosed: 'Die rijen zijn nog niet open.',
+    errNet: 'We konden het boekingssysteem niet bereiken. Je plaatsen zijn nog niet geboekt.', retry: 'Probeer opnieuw', errMail: 'Of mail ons op',
+    errTimeout: 'Dit duurt te lang. Je plaatsen zijn misschien niet geboekt. Probeer opnieuw, of kijk eerst of je een bevestiging kreeg.',
+    waveNotOpen: 'Golf {n} opent over {t}', notify: 'Mail me als ze opent', waveFull: 'Golf {n} is vol. Golf {m} opent over {t}.',
+    allFull: 'Alle plaatsen zijn weg. Zet je op de wachtlijst; we mailen je als er een plaats vrijkomt.', waitlistOnly: 'Boeken kan nu alleen via de wachtlijst. We mailen je als er een plaats vrijkomt.',
+    over: 'The Mind Behind the Game is voorbij. Bedankt aan iedereen die kwam.', join: 'Op de wachtlijst', howMany: 'Hoeveel plaatsen?', sent: 'Gelukt. We mailen je.',
+    demo: 'Voorbeeld: boekingen worden gesimuleerd in je browser. Er wordt niets verstuurd.', lang: 'Taal',
+  },
+  fr: {
+    title: 'Choisis ta place', stage: 'Scène', reserved: 'Réservé aux invités', best: 'Meilleures places', seats: 'places', seat: 'place',
+    selected: 'Sélection', none: 'Aucune place choisie.', remove: 'Retirer', row: 'Rang', available: 'libre', taken: 'prise', closed: 'ouvre plus tard',
+    listAlt: 'Choisir dans une liste', addSeat: 'Ajouter la place', details: 'Tes coordonnées', email: 'E-mail', yourName: 'Ton nom',
+    guest: 'Prénom, place', consent: "J'ai 13 ans ou plus, ou un parent réserve pour moi", news: 'Tenez-moi au courant des prochains événements DIALI',
+    fcPlay: 'Je veux jouer à FC 27', fcU16: "J'ai moins de 16 ans", fcNote: "L'inscription ne garantit pas une place. Les 16 places vont aux participants inscrits qui se présentent le jour même.",
+    confirm: 'Confirmer mes places', holding: 'Nous bloquons tes places…', maxNote: "Jusqu'à 4 places par réservation, 6 par e-mail.",
+    errName: 'Indique ton nom.', errEmail: 'Indique une adresse e-mail valide, comme nom@exemple.be.', errGuest: 'Ajoute un prénom pour cette place.', errConsent: 'Confirme ceci pour réserver.', errSeats: 'Choisis au moins une place.',
+    errTaken: "Quelqu'un vient de prendre {seats}. Choisis-en une autre ; le reste de ta sélection est gardé.", errCap: 'Cette adresse a déjà {n} places. La limite est de 6 par e-mail.', errClosed: 'Ces rangs ne sont pas encore ouverts.',
+    errNet: "Impossible de joindre le système de réservation. Tes places ne sont pas encore réservées.", retry: 'Réessayer', errMail: 'Ou écris-nous à',
+    errTimeout: "C'est trop long. Tes places ne sont peut-être pas réservées. Réessaie, ou vérifie d'abord tes e-mails.",
+    waveNotOpen: 'La vague {n} ouvre dans {t}', notify: "Préviens-moi à l'ouverture", waveFull: 'La vague {n} est complète. La vague {m} ouvre dans {t}.',
+    allFull: "Toutes les places sont prises. Inscris-toi sur la liste d'attente.", waitlistOnly: "Les réservations passent maintenant par la liste d'attente.",
+    over: 'The Mind Behind the Game a eu lieu. Merci à toutes et à tous.', join: "Liste d'attente", howMany: 'Combien de places ?', sent: "C'est noté. Nous t'écrirons.",
+    demo: 'Aperçu : les réservations sont simulées dans ton navigateur. Rien n’est envoyé.', lang: 'Langue',
+  },
+};
+export function t(lang, key, vars = {}) {
+  const s = (STR[lang] || STR.en)[key] ?? STR.en[key] ?? key;
+  return s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+}

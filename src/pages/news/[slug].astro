@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  return (await getCollection('news')).map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const { Content } = await render(p);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`${p.data.title} | DIALI`} description={p.data.excerpt} jsonld={[{ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: p.data.title, datePublished: p.data.date.toISOString(), publisher: { '@type': 'NGO', name: 'DIALI vzw' } }]}>
+  <article class="section" style="padding-top:calc(var(--header-h) + 48px)">
+    <div class="wrap narrow">
+      <span class="eyebrow">{fmt(p.data.date)}</span>
+      <h1 style="font-size:var(--fs-h2)">{p.data.title}</h1>
+      <p class="lead">{p.data.excerpt}</p>
+    </div>
+    <div class="wrap" style="max-width:1000px;margin-block:32px"><Photo k={p.data.photo} alt="" ai={p.data.photo_is_ai} sizes="(min-width: 1000px) 1000px, 100vw" eager /></div>
+    <div class="wrap narrow article"><Content /></div>
+    <div class="wrap narrow" style="margin-top:40px"><a class="link-arrow" href="/news">All stories</a></div>
+  </article>
+  <style is:global>.article p,.article li{color:var(--muted);font-size:1.0625rem}.article strong{color:var(--white)}</style>
+</Base>

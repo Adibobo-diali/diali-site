@@ -1,0 +1,13 @@
+---
+import { isTBC } from '../lib/site';
+interface Props { items: { q: string; a: string }[]; id?: string }
+const { items, id } = Astro.props;
+---
+<div class="faq" id={id}>
+  {items.map((f) => (
+    <details>
+      <summary>{f.q}</summary>
+      <div>{isTBC(f.a) ? <p><span class="tbc">To confirm</span> {f.a.replace(/TO CONFIRM\.?\s*/i, '')}</p> : <p>{f.a}</p>}</div>
+    </details>
+  ))}
+</div>

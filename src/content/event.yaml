@@ -1,0 +1,61 @@
+# The Mind Behind the Game: everything about the conference lives here.
+# Edit in Pages CMS. Dates are ISO 8601 with the Brussels offset.
+title: The Mind Behind the Game
+line: The game is won here first.
+summary: A youth sport conference on mindset, mental performance and wellbeing.
+mode: upcoming          # upcoming | past
+start: 2026-12-20T10:30:00+01:00
+end: 2026-12-20T13:30:00+01:00
+doors: "10:00"
+date_label: Sun 20 Dec 2026
+date_chip: Sun 20 Dec · De Felix, Gentbrugge
+programme_label: 10:30–13:30, break and networking included
+venue:
+  name: De Felix
+  street: Braemkasteelstraat 33-35
+  postcode: "9050"        # TO CONFIRM
+  city: Gentbrugge
+  maps: https://www.google.com/maps/search/?api=1&query=De+Felix+Braemkasteelstraat+33+Gentbrugge
+language: English         # TO CONFIRM
+public_seats: 120
+max_per_booking: 4
+max_per_email: 6
+waitlist_only_from: 2026-12-15T00:00:00+01:00
+waves:
+  - { n: 1, opens: 2026-11-05T10:00:00+01:00, rows: "B–C", last_row: C }
+  - { n: 2, opens: 2026-11-19T10:00:00+01:00, rows: "up to E", last_row: E }
+  - { n: 3, opens: 2026-12-03T10:00:00+01:00, rows: "up to G", last_row: G }
+seat_rows: [A, B, C, D, E, F, G]
+seats_per_row: 20          # 6 rows × 20 = 120 public seats; row A = guests
+reserved_rows: [A]
+api_url: /api/state
+fallback_text: Limited seats
+waitlist_text: Join the waitlist
+audience: Players, parents, coaches and anyone who loves the game.
+questions:
+  - title: What does it take to get to the top, and stay there?
+    text: Talent opens the door, but mindset keeps you in the room. What habits and thinking do top players share, and can they be learned young?
+    star: [0.411, 0.185]
+  - title: What happens when you're told no?
+    text: Most young players face rejection, release or injury, and few are prepared for it. How do you bounce back, and how can parents help?
+    star: [0.302, 0.426]
+  - title: Who looks after the mind?
+    text: Young players train their bodies every day, but who trains and protects their mental health? What signs should parents and coaches watch for?
+    star: [0.404, 0.380]
+  - title: What is social media doing to your game?
+    text: Highlight reels, comparison and online criticism follow young players everywhere. How do they protect their focus and their confidence?
+    star: [0.500, 0.407]
+doubt_words: ["Don't miss.", "Everyone is watching.", "What if I fail?", "Too young.", "Not good enough?"]
+faq:
+  - q: Do I need to register?
+    a: Yes. Every seat is booked in advance. Registration only, limited seats.
+  - q: Can parents come?
+    a: Yes. Parents are welcome, and a parent can book for a player under 13.
+  - q: How many seats can I book?
+    a: Up to 4 seats per booking.
+  - q: What if I can't come?
+    a: Release your seat with the link in your confirmation email, so someone on the waitlist can have it.
+  - q: Is the venue accessible?
+    a: TO CONFIRM
+  - q: Where can I park, or how do I get there by public transport?
+    a: TO CONFIRM

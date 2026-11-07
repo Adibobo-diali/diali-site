@@ -1,0 +1,23 @@
+# 301 redirects from the old Odoo URLs (bare domain → www is a Cloudflare redirect rule, see docs/deploy.md)
+/about-us                                   /#vision                              301
+/about-us/                                  /#vision                              301
+/contactus                                  /contact                              301
+/contactus/                                 /contact                              301
+/sponsors-partners-current-previous        /become-a-sponsor/partner#partners    301
+/blog                                       /news                                 301
+/blog/*                                     /news                                 301
+/event/the-mind-behind-the-game-7           /the-mind-behind-the-game             301
+/event/the-mind-behind-the-game-7/*         /the-mind-behind-the-game             301
+/event/spot-the-spark-4                     /events/spot-the-spark                301
+/event/spot-the-spark-4/*                   /events/spot-the-spark                301
+/event/the-digital-playbook*                /events/the-digital-playbook          301
+/event/diali-dream-big-tournament-i-6       /events/dream-big-tournament-i        301
+/event/diali-dream-big-tournament-i-6/*     /events/dream-big-tournament-i        301
+/event/diali-dream-big-tournament-ii-5      /events/dream-big-tournament-ii       301
+/event/diali-dream-big-tournament-ii-5/*    /events/dream-big-tournament-ii       301
+/event/*inter-cup*                          /events                               301
+/event/*summit*                             /events                               301
+/event                                      /events                               301
+/event/*                                    /events                               301
+/web/login                                  /                                     301
+# TO CONFIRM: the exact old URLs of the conference news posts → /news/the-mind-behind-the-game

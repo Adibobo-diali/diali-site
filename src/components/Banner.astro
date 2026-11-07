@@ -1,0 +1,14 @@
+---
+import Img from './Img.astro';
+interface Props { k?: string; eyebrow?: string; title: string; sub?: string; alt?: string }
+const { k = 'film/pages_banner_pitch', eyebrow, title, sub, alt = '' } = Astro.props;
+---
+<section class="banner" data-hero>
+  <div class="banner__img"><Img k={k} alt={alt} sizes="100vw" eager fetchpriority="high" /></div>
+  <div class="wrap">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h1>{title}</h1>
+    {sub && <p class="lead" style="max-width:56ch">{sub}</p>}
+    <slot />
+  </div>
+</section>

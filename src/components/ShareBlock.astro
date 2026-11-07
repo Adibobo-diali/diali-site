@@ -1,0 +1,31 @@
+---
+import { fc27 } from '../lib/site';
+const url = 'https://www.dialivzw.eu/fc27?ref=share';
+const msg = `${fc27.share_text} ${url}`;
+---
+<div class="glass share" data-share data-msg={msg} data-url={url}>
+  <p class="h-serif" style="font-size:2rem;margin:0">I'm in. Are you?</p>
+  <p class="muted" style="margin:6px 0 16px">Challenge a friend to the FC 27 tournament. {fc27.places} places.</p>
+  <div class="row">
+    <a class="btn btn--gold btn--small" href={`https://wa.me/?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener" data-share-btn="whatsapp">WhatsApp</a>
+    <button class="btn btn--outline btn--small" type="button" data-share-btn="instagram">Instagram</button>
+    <button class="btn btn--outline btn--small" type="button" data-share-btn="copy">Copy link</button>
+  </div>
+  <p class="small muted" role="status" aria-live="polite" data-share-status style="margin:10px 0 0"></p>
+</div>
+<script>
+  document.querySelectorAll('[data-share]').forEach((box) => {
+    const msg = box.dataset.msg, url = box.dataset.url, st = box.querySelector('[data-share-status]');
+    const beacon = (k) => { try { navigator.sendBeacon?.('/api/track', JSON.stringify({ e: 'share_' + k, p: location.pathname })); } catch {} };
+    box.querySelectorAll('[data-share-btn]').forEach((b) => b.addEventListener('click', async (e) => {
+      const k = b.dataset.shareBtn; beacon(k);
+      if (k === 'instagram') {
+        if (navigator.share && matchMedia('(pointer: coarse)').matches) { try { await navigator.share({ text: msg, url }); return; } catch { return; } }
+        await navigator.clipboard?.writeText(msg).catch(() => {});
+        st.textContent = 'Message copied. Paste it in Instagram.';
+        window.open('https://www.instagram.com/', '_blank', 'noopener');
+      }
+      if (k === 'copy') { await navigator.clipboard?.writeText(url).catch(() => {}); st.textContent = 'Link copied.'; }
+    }));
+  });
+</script>

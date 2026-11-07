@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import Banner from '../../components/Banner.astro';
+import Photo from '../../components/Photo.astro';
+import { getCollection } from 'astro:content';
+import { event, fc27 } from '../../lib/site';
+const past = (await getCollection('events')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const upcoming = event.mode === 'upcoming';
+---
+<Base title="Events · What we've done. What's next. | DIALI" description="The Mind Behind the Game and the FC 27 tournament on Sun 20 Dec 2026. Past: Spot The Spark, The Digital Playbook, Dream Big Tournament I and II.">
+  <Banner eyebrow="Events" title="What we've done. What's next." />
+  <section class="section" aria-labelledby="up-h">
+    <div class="wrap">
+      <span class="eyebrow">Upcoming</span>
+      <h2 id="up-h" class="sr-only">Upcoming events</h2>
+      {upcoming ? (
+        <div class="grid" style="gap:28px">
+          <a class="card card--big" href="/the-mind-behind-the-game">
+            <Photo k="film/conf_04_voices_stage" alt="" ai ratio="16 / 9" />
+            <div>
+              <span class="chip">{event.date_label} · {event.venue.name}, {event.venue.city}</span>
+              <h3 style="font-size:var(--fs-h2);margin-top:16px">{event.title}</h3>
+              <p class="lead">{event.summary} Doors {event.doors}. Registration only · limited seats.</p>
+              <span class="btn btn--gold">Reserve your seat</span>
+            </div>
+          </a>
+          <a class="card card--big" href="/fc27">
+            <Photo k="film/conf_06_fc27_reveal_desktop" alt="" ai ratio="16 / 9" />
+            <div>
+              <span class="chip">{event.date_label} · after the conference</span>
+              <h3 style="font-size:var(--fs-h2);margin-top:16px">{fc27.title}</h3>
+              <p class="lead">{fc27.places} players · knockout · one winner.</p>
+              <span class="link-arrow">FC 27 tournament</span>
+            </div>
+          </a>
+        </div>
+      ) : (
+        <div class="glass" id="newsletter"><h3>Next event announced soon.</h3><p class="muted">Leave your email and we'll tell you first.</p><a class="btn btn--gold" href="/contact">Keep me posted</a></div>
+      )}
+    </div>
+  </section>
+  <section class="section section--navy" aria-labelledby="past-h">
+    <div class="wrap">
+      <span class="eyebrow">Past</span>
+      <h2 id="past-h">The proof.</h2>
+      <div class="grid grid-2" style="margin-top:28px">
+        {past.map((e) => (
+          <a class="card" href={`/events/${e.id}`}>
+            <Photo k={e.data.photo} alt={`${e.data.title}, ${e.data.date_label}`} />
+            <span class="eyebrow" style="margin:0">{e.data.date_label} · {e.data.kind}</span>
+            <h3>{e.data.title}</h3>
+            <p class="muted" style="margin:0">{e.data.summary}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

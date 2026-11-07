@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="FC 27 admin | DIALI" description="Admin" noindex hideBar>
+  <section class="section" style="padding-top:calc(var(--header-h) + 24px)">
+    <div class="wrap" style="max-width:640px">
+      <h1 style="font-size:2.25rem">FC 27 on the day</h1>
+      <form class="row" data-total>
+        <div class="field" style="flex:1"><label for="ft">Microsoft Form total (type it in)</label><input class="input" id="ft" type="number" min="0" inputmode="numeric" /></div>
+        <button class="btn btn--outline btn--small" type="submit" style="align-self:end">Save</button>
+      </form>
+      <p class="muted small" data-count></p>
+      <h2 class="h-small" style="margin-top:24px">Checked-in players</h2>
+      <p class="small muted">Edit names to first name + initial or a chosen nickname. One per line.</p>
+      <textarea class="textarea" aria-label="Checked-in player names, one per line" data-names style="min-height:200px"></textarea>
+      <button class="btn btn--gold btn--block" type="button" data-draw style="margin-top:12px">Random draw into the 16 slots</button>
+      <h2 class="h-small" style="margin-top:28px">Tap the winner of each match</h2>
+      <div data-matches class="stack"></div>
+      <button class="btn btn--outline btn--block" type="button" data-undo style="margin-top:16px">Undo last tap</button>
+    </div>
+  </section>
+  <style>
+    .match { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .match button { min-height: 56px; border-radius: 6px; border: 1px solid var(--hairline); background: var(--navy); color: var(--white); font: 600 1rem var(--sans); }
+    .match button.win { background: var(--gold); color: var(--ink); }
+    .rnd { color: var(--gold); font-size: var(--fs-eyebrow); letter-spacing: .14em; text-transform: uppercase; margin-top: 12px; }
+  </style>
+  <script>
+    import { admin } from '../../scripts/api.js';
+    const $ = (s) => document.querySelector(s);
+    const names = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final'];
+    let st = { rounds: [] };
+    async function load() {
+      const r = await admin('fc27'); if (!r.ok) return; st = r;
+      $('#ft').value = r.formTotal || 0;
+      $('[data-count]').textContent = `${(r.signups || []).length} tick-box sign-ups + ${r.formTotal || 0} from the form = ${(r.signups || []).length + (r.formTotal || 0)}`;
+      if (!$('[data-names]').value) $('[data-names]').value = (r.checkedIn || []).map((s) => s.name).join('\n');
+      render();
+    }
+    function render() {
+      const R = st.rounds || [];
+      $('[data-matches]').innerHTML = R.slice(0, 4).map((round, r) => {
+        if (!round) return '';
+        const pairs = []; for (let m = 0; m < round.length / 2; m++) pairs.push(m);
+        return `<p class="rnd">${names[r]}</p>` + pairs.map((m) => { const a = round[m * 2], b = round[m * 2 + 1], w = R[r + 1]?.[m]; return `<div class="match"><button data-r="${r}" data-m="${m}" data-s="0" class="${w && w === a ? 'win' : ''}" ${a ? '' : 'disabled'}>${a || '–'}</button><button data-r="${r}" data-m="${m}" data-s="1" class="${w && w === b ? 'win' : ''}" ${b ? '' : 'disabled'}>${b || '–'}</button></div>`; }).join('');
+      }).join('') + (R[4]?.[0] ? `<p class="h-serif" style="font-size:2rem;color:var(--gold-light)">Winner: ${R[4][0]}</p>` : '');
+    }
+    $('[data-total]').addEventListener('submit', async (e) => { e.preventDefault(); await admin('fc27-form-total', { total: Number($('#ft').value) }); load(); });
+    $('[data-draw]').addEventListener('click', async () => { if (st.rounds?.length && !confirm('Redraw? This clears the bracket.')) return; const n = $('[data-names]').value.split('\n').map((s) => s.trim()).filter(Boolean); const r = await admin('fc27-draw', { names: n }); st.rounds = r.rounds; render(); });
+    $('[data-matches]').addEventListener('click', async (e) => { const b = e.target.closest('button[data-r]'); if (!b) return; const r = await admin('fc27-win', { round: +b.dataset.r, match: +b.dataset.m, side: +b.dataset.s }); st.rounds = r.rounds; render(); });
+    $('[data-undo]').addEventListener('click', async () => { const r = await admin('fc27-undo', {}); st.rounds = r.rounds; render(); });
+    load();
+  </script>
+</Base>

@@ -1,0 +1,21 @@
+---
+import { img } from '../lib/site';
+interface Props { k: string; alt: string; sizes?: string; class?: string; eager?: boolean; defer?: boolean; style?: string; fetchpriority?: 'high' | 'low' | 'auto' }
+const { k, alt, sizes = '100vw', class: cls, eager = false, defer = false, style, fetchpriority } = Astro.props;
+const i = img(k, sizes);
+---
+{defer ? (
+  // Film layers that sit in the sticky stage: the browser would fetch them on first paint because the
+  // stage is always in view. film-home.js fills these in on the first scroll or when the page goes idle.
+  <picture class={cls} style={style} data-deferred>
+    <source type="image/avif" data-srcset={i.avif} sizes={i.sizes} />
+    <source type="image/webp" data-srcset={i.webp} sizes={i.sizes} />
+    <img data-src={i.src} alt={alt} width={i.w} height={i.h} decoding="async" />
+  </picture>
+) : (
+  <picture class={cls} style={style}>
+    <source type="image/avif" srcset={i.avif} sizes={i.sizes} />
+    <source type="image/webp" srcset={i.webp} sizes={i.sizes} />
+    <img src={i.src} alt={alt} width={i.w} height={i.h} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={fetchpriority} />
+  </picture>
+)}

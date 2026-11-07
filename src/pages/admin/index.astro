@@ -1,0 +1,89 @@
+---
+// Protected by Cloudflare Access (one-time PIN to Adnan's email). Never linked publicly.
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Admin | DIALI" description="Admin" noindex hideBar>
+  <section class="section" style="padding-top:calc(var(--header-h) + 32px)">
+    <div class="wrap">
+      <div class="row" style="justify-content:space-between">
+        <h1 style="font-size:var(--fs-h2);margin:0">Bookings</h1>
+        <div class="row no-print">
+          <a class="btn btn--outline btn--small" href="/admin/fc27">FC 27 bracket</a>
+          <button class="btn btn--outline btn--small" type="button" data-csv>Export CSV</button>
+          <button class="btn btn--outline btn--small" type="button" data-print>Print door list</button>
+        </div>
+      </div>
+      <p class="muted" data-summary></p>
+      <div class="field no-print" style="max-width:420px"><label for="q">Search name or email</label><input class="input" id="q" type="search" data-q autocomplete="off" /></div>
+      <table class="adm" data-table>
+        <thead><tr><th>Name</th><th>Seats</th><th>Email</th><th>Ref</th><th>FC 27</th><th class="no-print">Check in</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="grid grid-2 no-print" style="margin-top:48px;align-items:start">
+        <form class="glass form" data-block>
+          <h2 class="h-small">Club block booking (up to 10)</h2>
+          <div class="field"><label for="bk-club">Club</label><input class="input" id="bk-club" name="club" required /></div>
+          <div class="field"><label for="bk-email">Contact email</label><input class="input" id="bk-email" name="email" type="email" required /></div>
+          <div class="field"><label for="bk-seats">Seats (e.g. E1-E10 or E1,E2)</label><input class="input" id="bk-seats" name="seats" required /></div>
+          <div class="field"><label for="bk-ref">Club code (ref)</label><input class="input" id="bk-ref" name="ref" /></div>
+          <button class="btn btn--gold" type="submit">Book block</button>
+          <p class="small" data-block-status role="status"></p>
+        </form>
+        <div class="glass">
+          <h2 class="h-small">Waitlist</h2>
+          <ol data-waitlist class="small"></ol>
+          <p class="small muted">"Offer" emails a 24-hour claim link for the freed seat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    .adm { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: .9375rem; }
+    .adm th, .adm td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(217,180,90,.2); vertical-align: middle; }
+    .adm th { color: var(--gold); font-size: var(--fs-eyebrow); letter-spacing: .14em; text-transform: uppercase; }
+    .adm tr.is-in td { background: rgba(159,224,176,.08); }
+    @media (max-width: 760px) { .adm th:nth-child(3), .adm td:nth-child(3), .adm th:nth-child(4), .adm td:nth-child(4) { display: none; } }
+    @media print {
+      .site-header, .site-footer, .no-print, .grain { display: none !important; }
+      body, html { background: #fff; color: #000; }
+      .adm th, .adm td { color: #000; border-color: #999; }
+      .section { padding: 0; }
+    }
+  </style>
+  <script>
+    import { admin } from '../../scripts/api.js';
+    const $ = (s) => document.querySelector(s);
+    let data = { bookings: [], waitlist: [] };
+    const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    async function load() { const r = await admin('bookings'); if (r.ok) data = r; render(); }
+    function render() {
+      const q = $('[data-q]').value.trim().toLowerCase();
+      const rows = data.bookings.slice().sort((a, b) => a.name.localeCompare(b.name)).filter((b) => !q || (b.name + ' ' + b.email + ' ' + (b.guests || []).join(' ')).toLowerCase().includes(q));
+      $('[data-table] tbody').innerHTML = rows.map((b) => `<tr class="${b.checkedIn ? 'is-in' : ''}"><td><strong>${esc(b.name)}</strong>${b.guests?.length ? `<br><span class="small muted">+ ${esc(b.guests.join(', '))}</span>` : ''}</td><td>${esc(b.seats.join(' '))}</td><td>${esc(b.email)}</td><td>${esc(b.ref)}</td><td>${(b.fc27 || []).map((f) => esc(f.name) + (f.under16 ? ' (U16)' : '')).join(', ')}</td><td class="no-print"><button class="btn btn--small ${b.checkedIn ? 'btn--gold' : 'btn--outline'}" data-in="${esc(b.id)}">${b.checkedIn ? 'In ✓' : 'Check in'}</button></td></tr>`).join('');
+      const seats = data.bookings.reduce((n, b) => n + b.seats.length, 0), inn = data.bookings.filter((b) => b.checkedIn).reduce((n, b) => n + b.seats.length, 0);
+      $('[data-summary]').textContent = `${data.bookings.length} bookings · ${seats} seats · ${inn} checked in · ${data.waitlist.length} on the waitlist`;
+      $('[data-waitlist]').innerHTML = data.waitlist.map((w, i) => `<li>${esc(w.email)} · ${esc(w.seats || 1)} seat(s) <button class="linkish" data-offer="${i}">Offer</button></li>`).join('');
+    }
+    $('[data-q]').addEventListener('input', render);
+    document.addEventListener('click', async (e) => {
+      const b = e.target.closest('[data-in]'); if (b) { await admin('checkin', { id: b.dataset.in }); load(); }
+      const o = e.target.closest('[data-offer]'); if (o) { const r = await admin('offer', { index: Number(o.dataset.offer) }); o.textContent = r.ok ? 'Offered' : 'Failed'; }
+    });
+    $('[data-csv]').addEventListener('click', () => {
+      const head = ['id', 'name', 'guests', 'email', 'seats', 'ref', 'lang', 'fc27', 'checkedIn'];
+      const lines = [head.join(',')].concat(data.bookings.map((b) => [b.id, b.name, (b.guests || []).join(' | '), b.email, b.seats.join(' '), b.ref, b.lang, (b.fc27 || []).map((f) => f.name).join(' | '), b.checkedIn ? 'yes' : ''].map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')));
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' })); a.download = 'diali-bookings.csv'; a.click();
+    });
+    $('[data-print]').addEventListener('click', () => { $('[data-q]').value = ''; render(); print(); });
+    $('[data-block]').addEventListener('submit', async (e) => {
+      e.preventDefault(); const f = e.currentTarget;
+      const seats = f.seats.value.split(',').flatMap((p) => { const m = p.trim().toUpperCase().match(/^([A-G])(\d+)-\1?(\d+)$/); return m ? Array.from({ length: +m[3] - +m[2] + 1 }, (_, i) => m[1] + (+m[2] + i)) : [p.trim().toUpperCase()]; }).filter(Boolean);
+      if (seats.length > 10) { $('[data-block-status]').textContent = 'Maximum 10 seats per club block.'; return; }
+      const r = await admin('block', { club: f.club.value, email: f.email.value, seats, ref: f.ref.value });
+      $('[data-block-status]').textContent = r.ok ? `Booked ${seats.join(' ')}` : `Failed: ${r.error}${r.taken ? ' ' + r.taken.join(' ') : ''}`;
+      load();
+    });
+    load();
+  </script>
+</Base>

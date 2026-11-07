@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { event, fc27 } from '../lib/site';
+---
+<Base title="Bring your team · Block seats for clubs | DIALI" description="Book a block of up to 10 seats for your players, coaches and parents at The Mind Behind the Game, Sun 20 Dec 2026, Gentbrugge." noindex>
+  <Banner k="photos/dream-big-i-huddle" alt="A youth team in a huddle" eyebrow="For clubs" title="Bring your team." sub="Book a block of seats for your players, coaches and parents. Tell us how many people are coming, up to 10, and we'll reserve the seats together and handle the rest." />
+  <section class="section">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div class="stack">
+        <div class="ticket">
+          <div class="ticket__main">
+            <span class="eyebrow" style="margin:0">Registration only · limited seats</span>
+            <p class="h-serif" style="font-size:2rem;margin:6px 0 0">{event.title}</p>
+            <dl><dt>Date</dt><dd>{event.date_label}</dd><dt>Doors</dt><dd>{event.doors} · {event.programme_label}</dd><dt>Venue</dt><dd>{event.venue.name}, {event.venue.street}, {event.venue.city}</dd></dl>
+          </div>
+          <div class="ticket__stub"><span class="eyebrow" style="margin:0">Block</span><span class="stat__n">≤10</span></div>
+        </div>
+        <div class="glass">
+          <h2 class="h-small">Your players can also join the {fc27.title}.</h2>
+          <p class="muted">{fc27.places} players · knockout · straight after the conference.</p>
+          <a class="link-arrow" href="/fc27">FC 27 tournament</a>
+        </div>
+        <p><a class="link-arrow" href="/the-mind-behind-the-game">About the conference</a></p>
+      </div>
+      <ContactForm source="clubs" variant="club" />
+    </div>
+  </section>
+</Base>

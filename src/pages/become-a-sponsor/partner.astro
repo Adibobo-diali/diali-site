@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import Banner from '../../components/Banner.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import EUBlock from '../../components/EUBlock.astro';
+import { getCollection } from 'astro:content';
+import { fc27, PREVIEW, img } from '../../lib/site';
+const partners = (await getCollection('partners')).sort((a, b) => a.data.order - b.data.order).filter((p) => p.data.approved || PREVIEW);
+const types = [
+  { t: 'Grant', title: 'Grant partnership', what: 'Public or foundation funding for a programme.', ex: 'European Solidarity Corps, with JINT (Sport for Solidarity).' },
+  { t: 'Club', title: 'Club partnership', what: 'A club that opens doors for young players, such as trials and exchanges.', ex: 'Cultural Leonesa: the partner trial in Spain.' },
+  { t: 'Event', title: 'Event partnership', what: 'An organisation that co-hosts or supports one of our events.', ex: 'Alfa Cool.', tbc: true },
+  { t: 'Sponsorship', title: 'Sponsorship', what: 'Support with money or goods: gear, venue, services, prizes.', ex: fc27.prize_partner_confirmed ? 'Gear, venue, services and prizes.' : 'The FC 27 prize partner slot is open now.' },
+];
+---
+<Base title="Partner with DIALI · Put your name where young players look | DIALI" description="Reach young players, their parents and clubs. Four ways to partner with DIALI vzw: grant, club, event or sponsorship.">
+  <Banner k="photos/dream-big-ii-group" alt="Players and coaches together after Dream Big Tournament II" eyebrow="Partners" title="Put your name where young players look." sub="Who you reach: the youth, their parents and clubs." />
+  <section class="section" aria-labelledby="ways-h">
+    <div class="wrap">
+      <span class="eyebrow">Four ways to partner</span>
+      <h2 id="ways-h">Pick the one that fits.</h2>
+      <div class="grid grid-4" style="margin-top:28px">
+        {types.map((x) => (
+          <a class="glass card" href={`?type=${encodeURIComponent(x.t)}#form`} data-type-link={x.t}>
+            <h4 style="color:var(--gold-light)">{x.title}</h4>
+            <p style="margin:0">{x.what}</p>
+            <p class="muted small" style="margin:0"><strong style="color:var(--ivory)">Example:</strong> {x.ex} {x.tbc && <span class="tbc">What they did: to confirm</span>}</p>
+            <span class="link-arrow">Start here</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section section--navy" id="partners" aria-labelledby="pp-h">
+    <div class="wrap">
+      <span class="eyebrow">Current and past partners</span>
+      <h2 id="pp-h">In good company.</h2>
+      {PREVIEW && <p class="small"><span class="tbc">Preview: logos shown for review, each still needs your approval</span></p>}
+      <ul class="logos">
+        {partners.map((p) => {
+          const i = img(p.data.logo);
+          return <li><img src={`${i.base}-${i.widths[i.widths.length - 1]}.png`} alt={p.data.name} loading="lazy" width={i.w} height={i.h} /></li>;
+        })}
+      </ul>
+      <p class="lead" style="margin-top:32px;max-width:60ch">Sport for Solidarity is co-funded by the European Solidarity Corps, with JINT. Partnerships fund what grants don't.</p>
+      <EUBlock />
+    </div>
+  </section>
+  <section class="section" id="form" aria-labelledby="form-h">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Start the conversation</span>
+        <h2 id="form-h">Tell us what you have in mind.</h2>
+        <p class="lead">One of the team replies personally.</p>
+        <div class="glass" style="margin-top:28px">
+          <p class="eyebrow" style="margin:0 0 6px">Bank details for direct support</p>
+          <p class="small muted" style="margin:0">DIALI vzw · IBAN <span class="tbc">To confirm</span> · {''}Reg. no. 1013473618</p>
+        </div>
+      </div>
+      <ContactForm source="partners" variant="partner" />
+    </div>
+  </section>
+  <style>
+    .logos { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; }
+    .logos li { background: #fff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; padding: 16px; height: 96px; }
+    .logos img { max-height: 56px; max-width: 100%; width: auto; height: auto; object-fit: contain; }
+  </style>
+</Base>

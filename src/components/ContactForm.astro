@@ -1,0 +1,58 @@
+---
+// Generic form → /api/form (Turnstile + honeypot → Sheet "Messages" tab → Resend → Outlook).
+// variant: contact (name, email, question) · partner (+ organisation, type) · club (+ club, seats, ref)
+import { EMAIL } from '../lib/site';
+interface Props { source: string; variant?: 'contact' | 'partner' | 'club'; type?: string }
+const { source, variant = 'contact', type } = Astro.props;
+const id = `f-${source}`;
+---
+<form class="form" data-form={variant} data-source={source} novalidate data-hide-bar>
+  <div class="field">
+    <label for={`${id}-name`}>Your name</label>
+    <input class="input" id={`${id}-name`} name="name" autocomplete="name" required maxlength="120" />
+    <p class="error" id={`${id}-name-err`}></p>
+  </div>
+  <div class="field">
+    <label for={`${id}-email`}>Email</label>
+    <input class="input" id={`${id}-email`} name="email" type="email" autocomplete="email" required maxlength="200" />
+    <p class="error" id={`${id}-email-err`}></p>
+  </div>
+  {variant !== 'contact' && (
+    <div class="field">
+      <label for={`${id}-org`}>{variant === 'club' ? 'Club' : 'Company or organisation'} {variant === 'partner' && <span class="muted small">(optional)</span>}</label>
+      <input class="input" id={`${id}-org`} name="organisation" autocomplete="organization" maxlength="160" required={variant === 'club'} />
+      <p class="error" id={`${id}-org-err`}></p>
+    </div>
+  )}
+  {variant === 'partner' && (
+    <div class="field">
+      <label for={`${id}-type`}>Partnership type</label>
+      <select class="select" id={`${id}-type`} name="type" data-type-select>
+        {['Grant', 'Club', 'Event', 'Sponsorship', 'Not sure yet'].map((t) => <option selected={type === t}>{t}</option>)}
+      </select>
+    </div>
+  )}
+  {variant === 'club' && (
+    <>
+      <input type="hidden" name="type" value="Club" />
+      <div class="field">
+        <label for={`${id}-seats`}>Number of seats (up to 10)</label>
+        <input class="input" id={`${id}-seats`} name="seats" type="number" inputmode="numeric" min="1" max="10" required style="max-width:160px" />
+        <p class="error" id={`${id}-seats-err`}></p>
+      </div>
+    </>
+  )}
+  <div class="field">
+    <label for={`${id}-msg`}>{variant === 'contact' ? 'Your question' : 'Your question or idea'}</label>
+    <textarea class="textarea" id={`${id}-msg`} name="message" required maxlength="4000"></textarea>
+    <p class="error" id={`${id}-msg-err`}></p>
+  </div>
+  <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+  <div class="cf-turnstile" data-turnstile></div>
+  <div><button class="btn btn--gold" type="submit">Send</button></div>
+  <div class="form-status" role="status" aria-live="polite" hidden data-status></div>
+  <p class="muted small" style="margin:0">We use your details only to reply. See our <a href="/privacy">privacy notice</a>. Prefer email? <a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
+</form>
+<script>
+  import '../scripts/forms.js';
+</script>

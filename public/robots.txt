@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin
+Disallow: /styleguide
+Disallow: /seats/confirmed
+Disallow: /seats/manage
+Sitemap: https://www.dialivzw.eu/sitemap.xml

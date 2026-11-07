@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Img from '../../components/Img.astro';
+import { getCollection, render } from 'astro:content';
+import { event, isTBC } from '../../lib/site';
+export async function getStaticPaths() {
+  const all = await getCollection('events');
+  return all.map((e) => ({ params: { slug: e.id }, props: { e } }));
+}
+const { e } = Astro.props;
+const { Content } = await render(e);
+---
+<Base title={`${e.data.title} · ${e.data.date_label} | DIALI`} description={e.data.summary}>
+  <section class="banner" data-hero>
+    <div class="banner__img"><Img k={e.data.photo} alt={`${e.data.title}, ${e.data.date_label}`} sizes="100vw" eager /></div>
+    <div class="wrap">
+      <span class="eyebrow">{e.data.date_label} · {e.data.kind}</span>
+      <h1>{e.data.title}</h1>
+      <p class="lead">{isTBC(e.data.place) ? <span class="tbc">Venue to confirm</span> : e.data.place}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div class="narrow article"><Content /></div>
+      <div class="grid" style="gap:0">{e.data.facts.map((f) => <div class="stat"><div class="stat__l" style="font-size:1.125rem;color:var(--ivory)">{f}</div></div>)}</div>
+    </div>
+  </section>
+  {e.data.gallery.length > 0 && (
+    <section class="section section--navy" aria-label="Photos">
+      <div class="wrap grid grid-3">
+        {e.data.gallery.map((g) => <Photo k={g} alt={`${e.data.title}: photo`} ratio="4 / 3" sizes="(min-width: 900px) 33vw, 100vw" />)}
+      </div>
+      <p class="wrap small muted" style="margin-top:12px">Photos shown with consent. <span class="tbc">Consent records to confirm</span></p>
+    </section>
+  )}
+  <section class="section">
+    <div class="wrap card--big">
+      <div><span class="eyebrow">Next up</span><h2>{event.title}</h2><p class="lead">{event.date_label} · {event.venue.name}, {event.venue.city}. Registration only · limited seats.</p></div>
+      <div class="row"><a class="btn btn--gold" href="/seats">Reserve your seat</a><a class="btn btn--outline" href="/events">All events</a></div>
+    </div>
+  </section>
+  <style is:global>.article p,.article li{color:var(--muted)}.article strong{color:var(--white)}.article ul{padding-left:1.2em}.article h2{font-size:var(--fs-h3)}</style>
+</Base>

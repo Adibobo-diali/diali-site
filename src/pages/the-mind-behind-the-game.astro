@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import Faq from '../components/Faq.astro';
+import EUBlock from '../components/EUBlock.astro';
+import WaveBar from '../components/WaveBar.astro';
+import { getCollection } from 'astro:content';
+import { event, fc27, img, isTBC } from '../lib/site';
+import '../styles/film.css';
+import '../styles/conference.css';
+
+const speakers = (await getCollection('speakers')).filter((s) => s.data.published).sort((a, b) => a.data.order - b.data.order);
+const first = speakers[0];
+const past = event.mode === 'past';
+const v = event.venue;
+const ics = '/the-mind-behind-the-game.ics';
+const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title + ' · DIALI')}&dates=20261220T093000Z/20261220T123000Z&details=${encodeURIComponent('Doors 10:00. Registration only · limited seats. https://www.dialivzw.eu/the-mind-behind-the-game')}&location=${encodeURIComponent(`${v.name}, ${v.street}, ${v.postcode} ${v.city}`)}`;
+const jsonld = [
+  {
+    '@context': 'https://schema.org', '@type': 'Event', name: event.title, description: event.summary,
+    startDate: '2026-12-20T10:30:00+01:00', endDate: '2026-12-20T13:30:00+01:00', doorTime: '2026-12-20T10:00:00+01:00',
+    eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: { '@type': 'Place', name: v.name, address: { '@type': 'PostalAddress', streetAddress: v.street, postalCode: v.postcode, addressLocality: v.city, addressCountry: 'BE' } },
+    organizer: { '@type': 'NGO', name: 'DIALI vzw', url: 'https://www.dialivzw.eu' },
+    image: ['https://www.dialivzw.eu/og/conference.jpg'],
+    // offers: TO CONFIRM
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: event.faq.filter((f) => !isTBC(f.a)).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+];
+const confFilm = { questions: event.questions, doubt: event.doubt_words };
+---
+<Base
+  title="The Mind Behind the Game · Sun 20 Dec 2026 · Gentbrugge | DIALI"
+  description="A youth sport conference on mindset, mental performance and wellbeing. Sun 20 Dec 2026, De Felix, Gentbrugge. Doors 10:00. Registration only · limited seats."
+  og="/og/conference.jpg"
+  film
+  jsonld={jsonld}
+>
+  <div class="arrival-bloom" data-arrival aria-hidden="true"></div>
+  <section class="film film--conf" data-film aria-label="The Mind Behind the Game">
+    <a class="skip-tour btn btn--outline btn--small" href="#details">Skip the tour</a>
+    <div class="stage">
+      <div class="layer" data-layer="penalty" aria-hidden="true">
+        <picture class="cover">
+          <source media="(max-width: 760px)" type="image/avif" srcset={img('film/conf_01_penalty_mobile').avif} sizes="100vw" />
+          <source media="(max-width: 760px)" type="image/webp" srcset={img('film/conf_01_penalty_mobile').webp} sizes="100vw" />
+          <source type="image/avif" srcset={img('film/conf_01_penalty_desktop').avif} sizes="100vw" />
+          <img src={img('film/conf_01_penalty_desktop').src} srcset={img('film/conf_01_penalty_desktop').webp} sizes="100vw" alt="" width="1920" height="1072" fetchpriority="high" />
+        </picture>
+        <div class="doubts" aria-hidden="true">
+          {event.doubt_words.map((w, i) => <span class={`doubt doubt--${i}`}>{w}</span>)}
+        </div>
+      </div>
+      <div class="layer" data-layer="mind" aria-hidden="true">
+        <div class="mind" data-mind>
+          <Img k="film/conf_02_inside_the_mind_stars" alt="" sizes="200vw" />
+          {event.questions.map((q, i) => <span class="star" data-star={i} style={`left:${q.star[0] * 100}%;top:${q.star[1] * 100}%`}></span>)}
+        </div>
+      </div>
+      <div class="layer" data-layer="stage" aria-hidden="true">
+        <div class="hall" data-hall>
+          <Img k="film/conf_05_venue_cinema_hall" alt="" class="cover" sizes="100vw" />
+          <div class="hall__screen" data-hall-screen><Img k="film/conf_04_voices_stage" alt="" class="cover" sizes="100vw" /><div class="spot-breath"></div></div>
+        </div>
+      </div>
+      <div class="layer" data-layer="fc27" aria-hidden="true">
+        <div class="fcwrap" data-fcwrap>
+          <picture class="cover">
+            <source media="(max-width: 760px)" type="image/webp" srcset={img('film/conf_06_fc27_reveal_mobile').webp} sizes="100vw" />
+            <img src={img('film/conf_06_fc27_reveal_desktop').src} srcset={img('film/conf_06_fc27_reveal_desktop').webp} sizes="100vw" alt="" width="1920" height="1072" loading="lazy" />
+          </picture>
+        </div>
+      </div>
+      <div class="dip" data-dip aria-hidden="true"></div>
+      <div class="bloom" data-bloom aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <div class="chapter chapter--hero conf-hero" data-chapter="noise">
+        <span class="chip">{event.date_label} · {v.city}</span>
+        <h1 class="display">{event.title}</h1>
+        <p class="lead chapter__body" style="display:block">{event.summary} {event.date_label} · {v.city} · Registration only · limited seats</p>
+        <div class="row">
+          {past ? <a class="btn btn--gold" href="#details">Read the recap</a> : <a class="btn btn--gold" href="/seats" data-cta="conf-hero">Reserve your seat</a>}
+        </div>
+      </div>
+      <div class="chapter chapter--center" data-chapter="mind">
+        <p class="h-serif" style="font-size:var(--fs-h1);margin:0">{event.line}</p>
+      </div>
+      <div class="chapter chapter--q" data-chapter="intro">
+        <span class="eyebrow">Questions on the table</span>
+        <p class="h-serif chapter__title" style="margin:0">Possible topics, not a fixed programme.</p>
+      </div>
+      {event.questions.map((q, i) => (
+        <div class="chapter chapter--q" data-chapter={`q${i}`}>
+          <span class="eyebrow">Question {i + 1} of 4</span>
+          <h2 class="chapter__title">{q.title}</h2>
+          <p class="chapter__body muted">{q.text}</p>
+        </div>
+      ))}
+      <div class="chapter chapter--voice" data-chapter="voice">
+        <span class="eyebrow">The voices</span>
+        <h2 class="chapter__title">First voice confirmed: {first?.data.name ?? 'to be announced'}</h2>
+        {first && <p class="chapter__body">{isTBC(first.data.line) ? <span class="tbc">Photo and one line to confirm</span> : first.data.line}</p>}
+        <p class="muted chapter__body" style="display:block">More voices to be announced.</p>
+      </div>
+      <div class="chapter chapter--voice" data-chapter="hall">
+        <span class="eyebrow">The details</span>
+        <h2 class="chapter__title">{event.date_label} · Doors {event.doors}</h2>
+        <p class="chapter__body">{event.programme_label} · {v.name}, {v.city}</p>
+        <a class="link-arrow chapter__body" href="#details">All the details</a>
+      </div>
+      <div class="chapter chapter--fc" data-chapter="fc27">
+        <span class="eyebrow">Stay for the game</span>
+        <h2 class="chapter__title">Then the game: FC 27 tournament.</h2>
+        <p class="chapter__body">{fc27.places} players · knockout · straight after the conference.</p>
+        <div class="row chapter__body">
+          <a class="btn btn--outline btn--small" href="/fc27">FC 27 tournament</a>
+          <a class="btn btn--gold btn--small" href={fc27.waitlist_form} target="_blank" rel="noopener">Join the waiting list</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lite / no-JS: the same story as plain sections -->
+  <section class="section lite-doors" aria-label="The questions">
+    <div class="wrap">
+      <p class="h-serif" style="font-size:var(--fs-h2)">{event.line}</p>
+      <p class="eyebrow">Possible topics, not a fixed programme.</p>
+      <div class="grid grid-2" style="margin-top:20px">
+        {event.questions.map((q) => <div class="glass"><h3 style="font-size:1.75rem">{q.title}</h3><p class="muted" style="margin:0">{q.text}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="details" aria-labelledby="details-h">
+    <div class="wrap grid grid-2" style="align-items:start">
+      <div>
+        <span class="eyebrow">The details</span>
+        <h2 id="details-h">Your Sunday morning, planned.</h2>
+        <p class="lead">Who is it for: {event.audience.charAt(0).toLowerCase() + event.audience.slice(1)}</p>
+        <p class="muted">Language: {event.language} <span class="tbc">To confirm</span></p>
+        <WaveBar />
+      </div>
+      <div class="ticket">
+        <div class="ticket__main">
+          <span class="eyebrow" style="margin:0">Registration only · limited seats</span>
+          <p class="h-serif" style="font-size:2rem;margin:6px 0 0;line-height:1.1">{event.title}</p>
+          <dl>
+            <dt>Date</dt><dd>{event.date_label}</dd>
+            <dt>Doors</dt><dd>{event.doors}</dd>
+            <dt>Time</dt><dd>{event.programme_label}</dd>
+            <dt>Venue</dt><dd>{v.name}, {v.street}, {v.postcode} {v.city} <span class="tbc">Postcode to confirm</span></dd>
+          </dl>
+          <div class="row" style="margin-top:18px">
+            <a class="btn btn--outline btn--small" href={v.maps} target="_blank" rel="noopener">Open in Maps</a>
+            <a class="btn btn--outline btn--small" href={ics} download>Add to calendar (.ics)</a>
+            <a class="btn btn--outline btn--small" href={gcal} target="_blank" rel="noopener">Google Calendar</a>
+          </div>
+        </div>
+        <div class="ticket__stub">
+          <span class="eyebrow" style="margin:0">Seats left</span>
+          <span class="stat__n" data-seats-left>–</span>
+          <span class="muted small" data-wave-name>Limited seats</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy" id="your-seat" aria-labelledby="seat-h" data-hide-bar>
+    <div class="wrap" style="text-align:center">
+      <span class="eyebrow">Your seat</span>
+      <h2 id="seat-h">Choose your seat.</h2>
+      <p class="lead" style="margin-inline:auto;max-width:44ch">Pick your own seat on the map. Up to {event.max_per_booking} seats per booking. Booking takes about a minute.</p>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <a class="btn btn--gold" href="/seats" data-cta="conf-seat">Choose your seat</a>
+        <a class="btn btn--outline" href="/clubs">Booking for a team?</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h">
+    <div class="wrap narrow">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="faq-h">Good to know.</h2>
+      <Faq items={event.faq} />
+      <div style="margin-top:48px"><EUBlock /></div>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ confFilm }}>window.DIALI_CONF = confFilm;</script>
+  <script>
+    import '../scripts/film-conference.js';
+    import '../scripts/wavebar.js';
+  </script>
+</Base>

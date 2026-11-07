@@ -1,0 +1,262 @@
+---
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import Photo from '../components/Photo.astro';
+import SolidarityBand from '../components/SolidarityBand.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { getCollection } from 'astro:content';
+import { event, home, film, img, EMAIL } from '../lib/site';
+import '../styles/film.css';
+
+const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
+const past = event.mode === 'past';
+const T = film.hub.tunnels;
+const beat = (id: string) => film.beats.find((b: any) => b.id === id);
+const hub = img(film.hub.image);
+const photos = { events: beat('events').photo, tournaments: beat('tournaments').photo, scouting: beat('scouting').photo };
+const filmConfig = {
+  beats: film.beats, tunnels: T, hubAspect: film.hub.aspect, frames: film.frames.walkout,
+  start: event.start.toISOString(), past,
+};
+const tunnelCopy = {
+  events: { label: 'Events', fact: 'Spot The Spark · 20+ young people, 4 experts · What scouts really look for.', link: 'See our events', alt: 'Young people listening during the Spot The Spark workshop' },
+  tournaments: { label: 'Tournaments', fact: 'Dream Big I & II · Next up: the FC 27 tournament, 20 Dec.', link: 'FC 27 tournament', alt: 'Players and coaches together after Dream Big Tournament II' },
+  scouting: { label: 'Scouting', fact: '', link: 'How scouting works', alt: 'Cultural Leonesa academy staff at a press table' },
+};
+---
+<Base
+  title="DIALI vzw · Seen. Ready. Chosen. · Youth sport in Gent"
+  description="DIALI gives young players what training doesn't: exposure, mindset and real opportunities. Next: The Mind Behind the Game, Sun 20 Dec 2026, Gentbrugge. Registration only · limited seats."
+  og="/og/home.jpg"
+  film
+>
+  <section class="film" data-film id="film" aria-label="The DIALI film">
+    <a class="skip-tour btn btn--outline btn--small" href="#vision">Skip the tour</a>
+    <div class="stage" aria-hidden="false">
+      <!-- H1 breathing loop -->
+      <div class="layer layer--breathe" data-layer="breathe" aria-hidden="true">
+        <video class="cover hide-lite" muted playsinline loop autoplay preload="auto" data-loop
+          data-src-desktop="/video/hero_breathing_desktop" data-src-mobile="/video/hero_breathing_mobile"></video>
+        <picture class="cover poster">
+          <source media="(max-width: 760px)" type="image/webp" srcset={img('film/hero_poster_mobile').webp} sizes="100vw" />
+          <source type="image/webp" srcset={img('film/hero_poster_desktop').webp} sizes="100vw" />
+          <img src={img('film/hero_poster_desktop').src} alt="" width="1284" height="716" fetchpriority="high" />
+        </picture>
+        <div class="exit-glow" data-exit-glow></div>
+      </div>
+      <!-- H2 walk-out canvas sequence -->
+      <div class="layer layer--runout" data-layer="runout" aria-hidden="true">
+        <canvas class="cover" data-canvas></canvas>
+      </div>
+      <!-- H3 hub with the four tunnels -->
+      <div class="layer layer--hub" data-layer="hub">
+        <div class="hub" data-hub style={`aspect-ratio:${film.hub.aspect}`}>
+          <img src={hub.src} srcset={hub.webp} sizes="300vw" alt="" width={hub.w} height={hub.h} decoding="async" />
+          {Object.entries(T).map(([k, t]: [string, any]) => (
+            <a class={`mouth mouth--${k}`} href={t.href} data-mouth={k}
+               style={`left:${(t.x - t.w / 2) * 100}%;top:${(t.y - t.h / 2) * 100}%;width:${t.w * 100}%;height:${t.h * 100}%`}>
+              <span class="sr-only">{t.label}</span><span class="mouth__enter" aria-hidden="true">Enter →</span>
+            </a>
+          ))}
+        </div>
+        {Object.entries(photos).map(([k, p]) => (
+          <div class="tunnel-photo" data-photo={k} aria-hidden="true">
+            <Img k={p as string} alt="" sizes="(max-width: 760px) 90vw, 60vw" defer />
+          </div>
+        ))}
+        <div class="door" data-door aria-hidden="true">
+          <div class="door__light"></div>
+          <div class="door__leaf door__leaf--l"><span class="door__handle"></span></div>
+          <div class="door__leaf door__leaf--r"><span class="door__handle"></span></div>
+          <div class="door__plate">Conference room</div>
+        </div>
+      </div>
+      <!-- H5 team -->
+      <div class="layer layer--team" data-layer="team" aria-hidden="true">
+        <Img k="film/home_05_team_walkout_standin" alt="" class="cover" sizes="100vw" defer />
+      </div>
+      <!-- H6 ending -->
+      <div class="layer layer--ending" data-layer="ending" aria-hidden="true">
+        <Img k="film/home_06_centre_circle_ending" alt="" class="cover" sizes="100vw" defer />
+      </div>
+      <div class="dip" data-dip aria-hidden="true"></div>
+      <div class="bloom" data-bloom aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <!-- Chapters (real, selectable HTML above the stage) -->
+      <div class="chapter chapter--hero" data-chapter="breathe">
+        <span class="chip">{past ? 'Thank you for coming · 20 Dec 2026' : event.date_chip}</span>
+        <p class="breathe-word">{home.eyebrow_breathe}</p>
+        <h1 class="display">{home.h1}</h1>
+        <p class="lead chapter__body">{home.mission}</p>
+        <div class="row">
+          {past ? <a class="btn btn--gold" href="/become-a-sponsor/partner">Partner with us</a> : <a class="btn btn--gold" href="/seats" data-cta="hero">Reserve your seat</a>}
+        </div>
+        <span class="scroll-cue" aria-hidden="true"><span></span>Scroll</span>
+      </div>
+
+      <div class="chapter chapter--proof" data-chapter="hub">
+        <span class="eyebrow">Four ways in</span>
+        <ul class="proof">
+          {home.proof.map((p: string) => <li>{p}</li>)}
+        </ul>
+      </div>
+
+      {(['events', 'tournaments', 'scouting'] as const).map((k) => (
+        <div class={`chapter chapter--tunnel`} data-chapter={k}>
+          <span class="eyebrow">{tunnelCopy[k].label}</span>
+          {k === 'scouting' ? (
+            <>
+              <h2 class="chapter__title">A real pathway, never a promise.</h2>
+              <blockquote class="quote chapter__body"><p>DIALI gave me the opportunity to go on a professional trial at Cultural Leonesa Academy in Spain.</p><cite>Kelly Boateng, athlete</cite></blockquote>
+            </>
+          ) : (
+            <h2 class="chapter__title">{tunnelCopy[k].fact}</h2>
+          )}
+          <a class="link-arrow" href={T[k].href}>{tunnelCopy[k].link}</a>
+        </div>
+      ))}
+
+      <div class="chapter chapter--door" data-chapter="conferences">
+        <span class="eyebrow">Conferences</span>
+        <h2 class="chapter__title">{event.title} · Sun 20 Dec</h2>
+        {!past && <p class="countdown chapter__body" data-countdown={event.start.toISOString()}>Starts in <strong>…</strong></p>}
+        <a class="btn btn--gold" href="/the-mind-behind-the-game" data-door-link data-cta="door">Enter the conference</a>
+      </div>
+
+      <div class="chapter chapter--center" data-chapter="spinback">
+        <p class="serif chapter__title" style="font-size:var(--fs-h2)">The whole of DIALI, at once.</p>
+      </div>
+
+      <div class="chapter chapter--team" data-chapter="team">
+        <span class="eyebrow">The team</span>
+        <ul class="team-names">
+          {team.map((t) => <li><strong>{t.data.name}</strong><span>{t.data.role}</span></li>)}
+        </ul>
+        <button class="btn btn--outline btn--small" type="button" data-team-open>More about our team</button>
+        <p class="ai-note chapter__body">Illustration. The real team is in the portraits.</p>
+      </div>
+
+      <div class="chapter chapter--ending" data-chapter="ending">
+        <span class="eyebrow">Our mission</span>
+        <p class="h-serif ending-line">{home.mission}</p>
+        <div class="row">
+          {past ? (
+            <>
+              <a class="btn btn--gold" href="/become-a-sponsor/partner">Partner with us</a>
+              <a class="btn btn--outline" href="#newsletter">{home.past_mode_title}</a>
+            </>
+          ) : (
+            <>
+              <a class="btn btn--gold" href="/seats" data-cta="ending">Register for The Mind Behind the Game</a>
+              <a class="btn btn--outline" href="/become-a-sponsor/partner">Partner with us</a>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lite / reduced-motion: the four doors as normal cards (also the no-JS version) -->
+  <section class="section lite-doors" aria-labelledby="doors-h">
+    <div class="wrap">
+      <span class="eyebrow">Four ways in</span>
+      <h2 id="doors-h">Choose your tunnel.</h2>
+      <div class="grid grid-4" style="margin-top:28px">
+        <a class="card" href="/events"><Photo k={photos.events} alt={tunnelCopy.events.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Events</h4><span class="muted small">{tunnelCopy.events.fact}</span></a>
+        <a class="card" href="/fc27"><Photo k={photos.tournaments} alt={tunnelCopy.tournaments.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Tournaments</h4><span class="muted small">{tunnelCopy.tournaments.fact}</span></a>
+        <a class="card" href="/our-programs#scouting"><Photo k={photos.scouting} alt={tunnelCopy.scouting.alt} sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Scouting</h4><span class="muted small">A partner trial at Cultural Leonesa, Spain. A real pathway, never a promise.</span></a>
+        <div class="card"><Photo k="film/conf_04_voices_stage" alt="" ai sizes="(min-width: 1000px) 25vw, 100vw" /><h4>Conferences</h4><span class="muted small">{event.title} · Sun 20 Dec</span><a class="btn btn--gold btn--small" style="justify-self:start" href="/the-mind-behind-the-game">Enter the conference</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="vision" aria-labelledby="vision-h">
+    <div class="wrap">
+      <span class="eyebrow">Our vision</span>
+      <h2 id="vision-h" style="max-width:22ch">{home.mission}</h2>
+      <p class="lead" style="max-width:52ch">{home.vision_line.charAt(0).toUpperCase() + home.vision_line.slice(1)}</p>
+      <div class="grid grid-3" style="margin-top:48px">
+        {home.pillars.map((p: any) => (
+          <div class="stat">
+            <div class="stat__n">{p.title}</div>
+            <p style="margin:12px 0 4px;font-weight:600">{p.line}</p>
+            <p class="muted small" style="margin:0">{p.proof}</p>
+          </div>
+        ))}
+      </div>
+      <p class="eyebrow" style="margin-top:40px">{home.sport_label}</p>
+    </div>
+  </section>
+
+  <section class="section section--navy" aria-labelledby="values-h">
+    <div class="wrap">
+      <span class="eyebrow">Values</span>
+      <h2 id="values-h">What we hold each other to.</h2>
+      <div class="grid values" style="margin-top:32px">
+        {home.values.map((v: any) => <div class="glass"><h4 style="color:var(--gold-light)">{v.title}</h4><p class="muted" style="margin:0">{v.line}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section proof-quotes" aria-labelledby="quotes-h">
+    <div class="proof-quotes__bg" aria-hidden="true"><Img k="photos/scouting-trial-group" alt="" sizes="100vw" /></div>
+    <div class="wrap" style="position:relative">
+      <span class="eyebrow">Proof</span>
+      <h2 id="quotes-h" class="sr-only">What players and partners say</h2>
+      <div class="grid grid-2" style="gap:48px">
+        <blockquote class="quote"><p>DIALI gave me the opportunity to go on a professional trial at Cultural Leonesa Academy in Spain.</p><cite>Kelly Boateng, athlete</cite></blockquote>
+        <blockquote class="quote"><p>It is always a pleasure to travel from Spain to Belgium to scout some top talents, giving them real opportunities at Cultural Leonesa!</p><cite>Victor France Eliano, International Academy Director</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <SolidarityBand />
+
+  <section class="section" aria-labelledby="clubs-h">
+    <div class="wrap card--big">
+      <Photo k="photos/dream-big-i-huddle" alt="A youth team in a huddle before a match" ratio="3 / 2" />
+      <div>
+        <span class="eyebrow">For clubs</span>
+        <h2 id="clubs-h">Bring your team.</h2>
+        <p class="lead">Book a block of seats for your players, coaches and parents, up to 10.</p>
+        <a class="btn btn--gold" href="/clubs">Book for your club</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--navy" id="contact" aria-labelledby="contact-h">
+    <div class="wrap grid grid-2">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h2 id="contact-h">Ask us anything.</h2>
+        <p class="lead">Or email us at <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+      </div>
+      <ContactForm source="home" />
+    </div>
+  </section>
+
+  <dialog class="team-modal" data-team-modal aria-labelledby="team-h">
+    <div class="team-modal__in">
+      <div class="row" style="justify-content:space-between">
+        <h2 id="team-h">Our team</h2>
+        <button class="btn btn--outline btn--small" type="button" data-team-close>Close</button>
+      </div>
+      <div class="grid grid-2" style="margin-top:20px">
+        {team.map((t) => (
+          <article class="team-card">
+            <Photo k={t.data.photo} alt={`${t.data.name}, ${t.data.role}`} ratio="4 / 3" sizes="(min-width: 900px) 40vw, 90vw" />
+            <h4 style="margin-top:14px">{t.data.name}</h4>
+            <p class="eyebrow" style="margin:0 0 6px">{t.data.role}</p>
+            <p class="muted small" style="margin:0" set:html={t.body?.trim()} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </dialog>
+
+  <script is:inline define:vars={{ filmConfig }}>window.DIALI_FILM = filmConfig;</script>
+  <script>
+    import '../scripts/film-home.js';
+  </script>
+</Base>

@@ -1,0 +1,442 @@
+{
+ "film/conf_01_penalty_desktop": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_01_penalty_desktop"
+ },
+ "film/conf_01_penalty_mobile": {
+  "w": 1080,
+  "h": 1935,
+  "widths": [
+   640,
+   1080
+  ],
+  "base": "/media/film/conf_01_penalty_mobile"
+ },
+ "film/conf_02_inside_the_mind": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_02_inside_the_mind"
+ },
+ "film/conf_02_inside_the_mind_stars": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_02_inside_the_mind_stars"
+ },
+ "film/conf_04_voices_stage": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_04_voices_stage"
+ },
+ "film/conf_05_venue_cinema_hall": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_05_venue_cinema_hall"
+ },
+ "film/conf_06_fc27_reveal_desktop": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/conf_06_fc27_reveal_desktop"
+ },
+ "film/conf_06_fc27_reveal_mobile": {
+  "w": 1080,
+  "h": 1935,
+  "widths": [
+   640,
+   1080
+  ],
+  "base": "/media/film/conf_06_fc27_reveal_mobile"
+ },
+ "film/hero_poster_desktop": {
+  "w": 1284,
+  "h": 716,
+  "widths": [
+   640,
+   1080,
+   1284
+  ],
+  "base": "/media/film/hero_poster_desktop"
+ },
+ "film/hero_poster_mobile": {
+  "w": 716,
+  "h": 1284,
+  "widths": [
+   640,
+   716
+  ],
+  "base": "/media/film/hero_poster_mobile"
+ },
+ "film/home_01_tunnel_desktop": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/home_01_tunnel_desktop"
+ },
+ "film/home_01_tunnel_mobile": {
+  "w": 1072,
+  "h": 1920,
+  "widths": [
+   640,
+   1072
+  ],
+  "base": "/media/film/home_01_tunnel_mobile"
+ },
+ "film/home_02_stadium_from_tunnel": {
+  "w": 1284,
+  "h": 716,
+  "widths": [
+   640,
+   1080,
+   1284
+  ],
+  "base": "/media/film/home_02_stadium_from_tunnel"
+ },
+ "film/home_03_four_tunnels_hub": {
+  "w": 1920,
+  "h": 815,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/home_03_four_tunnels_hub"
+ },
+ "film/home_05_team_walkout_standin": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/home_05_team_walkout_standin"
+ },
+ "film/home_06_centre_circle_ending": {
+  "w": 1920,
+  "h": 1072,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/home_06_centre_circle_ending"
+ },
+ "film/pages_banner_pitch": {
+  "w": 1920,
+  "h": 815,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/film/pages_banner_pitch"
+ },
+ "photos/digital-playbook": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/digital-playbook"
+ },
+ "photos/dream-big-i-action": {
+  "w": 1281,
+  "h": 1920,
+  "widths": [
+   640,
+   1080,
+   1281
+  ],
+  "base": "/media/photos/dream-big-i-action"
+ },
+ "photos/dream-big-i-huddle": {
+  "w": 1920,
+  "h": 1281,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/dream-big-i-huddle"
+ },
+ "photos/dream-big-i-medals": {
+  "w": 1920,
+  "h": 1720,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/dream-big-i-medals"
+ },
+ "photos/dream-big-ii-group": {
+  "w": 1727,
+  "h": 1295,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1727
+  ],
+  "base": "/media/photos/dream-big-ii-group"
+ },
+ "photos/dream-big-ii-team": {
+  "w": 1920,
+  "h": 1440,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/dream-big-ii-team"
+ },
+ "photos/scouting-cultural-leonesa": {
+  "w": 1785,
+  "h": 1920,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1785
+  ],
+  "base": "/media/photos/scouting-cultural-leonesa"
+ },
+ "photos/scouting-trial-group": {
+  "w": 1920,
+  "h": 1281,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/scouting-trial-group"
+ },
+ "photos/sport-for-solidarity-banner": {
+  "w": 1280,
+  "h": 1920,
+  "widths": [
+   640,
+   1080,
+   1280
+  ],
+  "base": "/media/photos/sport-for-solidarity-banner"
+ },
+ "photos/spot-the-spark-audience": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-audience"
+ },
+ "photos/spot-the-spark-group": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-group"
+ },
+ "photos/spot-the-spark-panel": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-panel"
+ },
+ "photos/spot-the-spark-room": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-room"
+ },
+ "photos/spot-the-spark-talk": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-talk"
+ },
+ "photos/spot-the-spark-wide": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/spot-the-spark-wide"
+ },
+ "photos/team-adnan-salifu": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/team-adnan-salifu"
+ },
+ "photos/team-el-mustafa-karar": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/team-el-mustafa-karar"
+ },
+ "photos/team-godwill-moraka": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/team-godwill-moraka"
+ },
+ "photos/team-raphael-de-somviele": {
+  "w": 1920,
+  "h": 1280,
+  "widths": [
+   640,
+   1080,
+   1600,
+   1920
+  ],
+  "base": "/media/photos/team-raphael-de-somviele"
+ },
+ "partners/alfa-cool": {
+  "w": 342,
+  "h": 147,
+  "widths": [
+   342
+  ],
+  "base": "/media/partners/alfa-cool"
+ },
+ "partners/alles-kan": {
+  "w": 448,
+  "h": 112,
+  "widths": [
+   448
+  ],
+  "base": "/media/partners/alles-kan"
+ },
+ "partners/cultural-leonesa": {
+  "w": 191,
+  "h": 264,
+  "widths": [
+   191
+  ],
+  "base": "/media/partners/cultural-leonesa"
+ },
+ "partners/european-solidarity-corps": {
+  "w": 317,
+  "h": 159,
+  "widths": [
+   317
+  ],
+  "base": "/media/partners/european-solidarity-corps"
+ },
+ "partners/jint": {
+  "w": 310,
+  "h": 163,
+  "widths": [
+   310
+  ],
+  "base": "/media/partners/jint"
+ },
+ "partners/stad-gent": {
+  "w": 284,
+  "h": 177,
+  "widths": [
+   284
+  ],
+  "base": "/media/partners/stad-gent"
+ },
+ "partners/xps": {
+  "w": 225,
+  "h": 225,
+  "widths": [
+   225
+  ],
+  "base": "/media/partners/xps"
+ }
+}

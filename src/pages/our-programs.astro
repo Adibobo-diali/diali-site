@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Banner from '../components/Banner.astro';
+import Photo from '../components/Photo.astro';
+import SolidarityBand from '../components/SolidarityBand.astro';
+import { getCollection } from 'astro:content';
+import { isTBC } from '../lib/site';
+const progs = (await getCollection('programmes')).sort((a, b) => a.data.order - b.data.order);
+const alts: Record<string, string> = { talent: 'Young people listening during a DIALI workshop', education: 'A speaker at a DIALI workshop', solidarity: 'Sport for Solidarity banner at a DIALI workshop', scouting: 'Cultural Leonesa academy staff at a press table' };
+---
+<Base title="Our programmes · Four ways in | DIALI" description="Talent identification, education and career pathways, community and solidarity, tournaments and scouting. Proof for each: Spot The Spark, The Digital Playbook, Dream Big I & II, a partner trial in Spain.">
+  <Banner k="film/home_03_four_tunnels_hub" eyebrow="Our programmes" title="Four ways in." sub="Every programme is free to take part in and built around one idea: talent is universal, opportunity is not.">
+    <p><span class="tbc">To confirm: every programme is free</span></p>
+  </Banner>
+  {progs.map((p, i) => (
+    <section class={`section ${i % 2 ? 'section--navy' : ''}`} id={p.data.anchor} aria-labelledby={`p-${p.data.anchor}`}>
+      <div class="wrap card--big" style={i % 2 ? 'direction:rtl' : ''}>
+        <Photo k={p.data.photo} alt={alts[p.data.anchor] ?? ''} ratio="4 / 3" />
+        <div style="direction:ltr">
+          <span class="eyebrow">Programme {i + 1} of 4</span>
+          <h2 id={`p-${p.data.anchor}`}>{p.data.title}</h2>
+          <p class="lead">{p.data.what}</p>
+          <dl class="pdl">
+            <dt>Who it's for</dt><dd>{isTBC(p.data.who) ? <span class="tbc">To confirm</span> : p.data.who}</dd>
+            <dt>Proof</dt><dd>{p.data.proof}</dd>
+          </dl>
+          {p.data.next && (
+            <div class="glass" style="margin:18px 0">
+              <p class="eyebrow" style="margin:0 0 6px">What we're building next · a plan, not yet running</p>
+              <p style="margin:0">{p.data.next.join(' · ')}</p>
+            </div>
+          )}
+          <div class="row">
+            <a class="btn btn--gold" href={p.data.cta.href}>{p.data.cta.label}</a>
+            {p.data.cta2 && <a class="btn btn--outline" href={p.data.cta2.href}>{p.data.cta2.label}</a>}
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+  <section class="section" aria-labelledby="incl-h">
+    <div class="wrap narrow">
+      <span class="eyebrow">A commitment to inclusion</span>
+      <h2 id="incl-h">Nobody stays home because of a bus ticket.</h2>
+      <p class="lead">Where needed, we cover transport, accessibility and equipment, and we build partnerships in neighbourhoods where opportunities are scarce.</p>
+    </div>
+  </section>
+  <SolidarityBand />
+  <style>.pdl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0}.pdl dt{color:var(--gold);font-size:var(--fs-eyebrow);letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding-top:4px}.pdl dd{margin:0}</style>
+</Base>

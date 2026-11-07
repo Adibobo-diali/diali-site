@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import { event, EMAIL } from '../../lib/site';
+import '../../styles/seats.css';
+---
+<Base
+  title="Reserve your seat · The Mind Behind the Game · Sun 20 Dec 2026 | DIALI"
+  description="Choose your own seat for The Mind Behind the Game, Sun 20 Dec 2026, De Felix, Gentbrugge. Registration only · limited seats. Up to 4 seats per booking."
+  og="/og/seats.jpg"
+  hideBar
+>
+  <section class="seats-page" data-hide-bar>
+    <div class="wrap">
+      <div class="seats-head">
+        <div>
+          <span class="eyebrow">{event.date_label} · Doors {event.doors} · {event.venue.name}, {event.venue.city}</span>
+          <h1 data-i="title">Choose your seat</h1>
+        </div>
+        <label class="lang">
+          <span class="sr-only" data-i="lang">Language</span>
+          <select class="select" data-lang aria-label="Language">
+            <option value="en">English</option><option value="nl">Nederlands</option><option value="fr">Français</option>
+          </select>
+        </label>
+      </div>
+      <p class="demo-note" hidden data-demo-note></p>
+
+      <div class="wavebar-live" aria-live="polite">
+        <p class="wave-status" data-wave-status>Loading the seat map…</p>
+        <ol class="wave-steps">
+          {event.waves.map((w) => <li data-wave={w.n} data-opens={w.opens.toISOString()}><strong>Wave {w.n}</strong><span>{w.opens.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Europe/Brussels' })} · rows {w.rows}</span></li>)}
+        </ol>
+      </div>
+
+      <!-- Special states (not open yet / wave full / all full / waitlist-only / over / error) -->
+      <div class="state-panel glass" hidden data-state-panel>
+        <p class="lead" data-state-text style="color:var(--white)"></p>
+        <form class="form" data-state-form novalidate>
+          <div class="field"><label for="st-email" data-i="email">Email</label><input class="input" id="st-email" type="email" name="email" autocomplete="email" required /><p class="error" id="st-email-err"></p></div>
+          <div class="field" data-howmany><label for="st-n" data-i="howMany">How many seats?</label><select class="select" id="st-n" name="n" style="max-width:120px"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+          <button class="btn btn--gold" type="submit" data-state-btn>Join the waitlist</button>
+          <p class="form-status" hidden role="status" data-state-status></p>
+        </form>
+      </div>
+
+      <div class="booking" data-booking hidden>
+        <div class="map-col">
+          <div class="map-tools row">
+            <span class="small muted" data-i="best">Best available</span>
+            {[1, 2, 3, 4].map((n) => <button type="button" class="btn btn--outline btn--small best" data-best={n}>×{n}</button>)}
+          </div>
+          <div class="seatmap" data-seatmap role="group" aria-label="Seat map. Use the buttons to pick seats.">
+            <div class="stage-label" data-i="stage">Stage</div>
+            <div data-rows></div>
+          </div>
+          <div class="legend small muted">
+            <span><i class="lg lg--free"></i><span data-i="available">available</span></span>
+            <span><i class="lg lg--sel"></i><span data-i="selected">Selected</span></span>
+            <span><i class="lg lg--taken"></i><span data-i="taken">taken</span></span>
+            <span><i class="lg lg--closed"></i><span data-i="closed">opens later</span></span>
+          </div>
+          <details class="list-alt">
+            <summary data-i="listAlt">Choose from a list instead</summary>
+            <div class="row" style="margin-top:12px">
+              <label class="sr-only" for="list-seat">Seat</label>
+              <select class="select" id="list-seat" data-list-seat style="max-width:260px"></select>
+              <button type="button" class="btn btn--outline btn--small" data-list-add data-i="addSeat">Add seat</button>
+            </div>
+          </details>
+        </div>
+
+        <form class="details glass" data-details novalidate>
+          <h2 class="h-small" data-i="selected">Selected</h2>
+          <ul class="sel-list" data-sel-list aria-live="polite"></ul>
+          <p class="small muted" data-i="maxNote">Up to 4 seats per booking, 6 per email.</p>
+          <p class="error" id="seats-err" data-seats-err></p>
+
+          <h2 class="h-small" style="margin-top:18px" data-i="details">Your details</h2>
+          <div class="field"><label for="b-email" data-i="email">Email</label><input class="input" id="b-email" name="email" type="email" autocomplete="email" required /><p class="error" id="b-email-err"></p></div>
+          <div class="field">
+            <label for="b-name" data-i="yourName">Your name</label><input class="input" id="b-name" name="name" autocomplete="name" required /><p class="error" id="b-name-err"></p>
+            <div class="fc" data-fc-for="0"></div>
+          </div>
+          <div data-guests></div>
+
+          <label class="check"><input type="checkbox" name="consent" required /><span data-i="consent">I'm 13 or older, or a parent is booking for me</span></label>
+          <p class="error" id="b-consent-err"></p>
+          <label class="check"><input type="checkbox" name="newsletter" /><span data-i="news">Keep me posted about future DIALI events</span></label>
+          <div class="hp" aria-hidden="true"><label>Leave empty <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+          <div class="cf-turnstile" data-turnstile></div>
+          <button class="btn btn--gold btn--block" type="submit" data-confirm data-i="confirm">Confirm my seats</button>
+          <div class="form-status form-status--error" hidden role="alert" data-book-error></div>
+          <p class="small muted" style="margin:0">By booking you agree to our <a href="/seats-privacy">booking privacy notice</a>. Booking for a club? <a href="/clubs">Book a block</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{ EMAIL, maxPer: event.max_per_booking }}>window.DIALI_BOOK = { email: EMAIL, maxPer };</script>
+  <script>
+    import '../../scripts/seats.js';
+  </script>
+</Base>

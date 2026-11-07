@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import { EMAIL } from '../../lib/site';
+---
+<Base title="Manage your seats | DIALI" description="Release one or all of your seats for The Mind Behind the Game." noindex hideBar>
+  <section class="section" style="padding-top:calc(var(--header-h) + 40px)">
+    <div class="wrap narrow">
+      <span class="eyebrow">The Mind Behind the Game</span>
+      <h1 style="font-size:var(--fs-h2)">Manage your seats</h1>
+      <div data-missing hidden class="glass"><p>This link is not valid any more. Email <a href={`mailto:${EMAIL}`}>{EMAIL}</a> and we will help.</p></div>
+      <form class="form glass" data-manage hidden>
+        <p class="muted" style="margin:0">Untick the seats you want to keep. Released seats go to the waitlist.</p>
+        <fieldset style="border:0;padding:0;margin:0"><legend class="h-small">Your seats</legend><div data-list class="stack"></div></fieldset>
+        <button class="btn btn--gold" type="submit">Release selected seats</button>
+        <p class="form-status" role="status" hidden data-status></p>
+      </form>
+    </div>
+  </section>
+  <script>
+    import { getBooking, release, reconfirm, isDemo } from '../../scripts/api.js';
+    const token = new URLSearchParams(location.search).get('token') || '';
+    const $ = (s) => document.querySelector(s);
+    async function load() {
+      const res = await getBooking(token);
+      if (!res.ok || !res.booking.seats.length) { $('[data-missing]').hidden = false; $('[data-manage]').hidden = true; if (res.ok) $('[data-missing]').innerHTML = '<p>All seats on this booking have been released. Thank you for letting us know.</p>'; return; }
+      const b = res.booking; $('[data-manage]').hidden = false;
+      const names = [b.name, ...(b.guests || [])];
+      $('[data-list]').innerHTML = b.seats.map((s, i) => `<label class="check"><input type="checkbox" value="${s}"><span>Row ${s[0]}, seat ${s.slice(1)} · ${names[i] || ''}</span></label>`).join('');
+    }
+    $('[data-manage]').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const seats = [...document.querySelectorAll('[data-list] input:checked')].map((i) => i.value);
+      const st = $('[data-status]'); st.hidden = false;
+      if (!seats.length) { st.textContent = 'Tick at least one seat to release.'; return; }
+      const res = await release({ token, seats });
+      st.textContent = res.ok ? (isDemo() ? 'Preview: seats released in this browser only.' : 'Done. Those seats are released.') : 'Something went wrong. Email us at Dialivzw@outlook.com.';
+      if (res.ok) load();
+    });
+    if (new URLSearchParams(location.search).get('confirm') === '1') {
+      reconfirm(token).then((r) => { const st = $('[data-status]'); st.hidden = false; st.textContent = r.ok ? "Thanks. Your seats are kept. See you on Sun 20 Dec, doors 10:00." : 'We could not confirm this link. Email us at Dialivzw@outlook.com.'; });
+    }
+    load();
+  </script>
+</Base>

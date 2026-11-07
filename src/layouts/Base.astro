@@ -1,0 +1,169 @@
+---
+import '../styles/global.css';
+import { event, PREVIEW, EMAIL, LEGAL } from '../lib/site';
+import EUBlock from '../components/EUBlock.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  og?: string;            // path to a 1200x630 OG image
+  film?: boolean;         // page starts with a pinned film: header is glass until the film ends
+  hideBar?: boolean;      // hide the sticky mobile action bar on this page
+  noindex?: boolean;
+  jsonld?: object[];
+  bodyClass?: string;
+}
+const { title, description, og = '/og/default.jpg', film = false, hideBar = false, noindex = false, jsonld = [], bodyClass = '' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, Astro.site).href;
+const nav = [
+  ['Conference', '/the-mind-behind-the-game'],
+  ['FC 27', '/fc27'],
+  ['Programs', '/our-programs'],
+  ['Events', '/events'],
+  ['News', '/news'],
+  ['Partners', '/become-a-sponsor/partner'],
+  ['Contact', '/contact'],
+];
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href + '/'));
+const past = event.mode === 'past';
+const primary = past ? { label: 'Partner with us', href: '/become-a-sponsor/partner' } : { label: 'Reserve your seat', href: '/seats' };
+const org = {
+  '@context': 'https://schema.org', '@type': 'NGO', name: 'DIALI vzw', url: 'https://www.dialivzw.eu', logo: 'https://www.dialivzw.eu/logo/diali-mark-white-256.png',
+  email: EMAIL, slogan: 'Seen. Ready. Chosen.', taxID: 'BE1013473618', address: { '@type': 'PostalAddress', addressLocality: 'Aalst', addressCountry: 'BE' },
+};
+const stateConfig = { api: event.api_url, fallback: event.fallback_text, waitlist: event.waitlist_text, waves: event.waves.map(w => ({ n: w.n, opens: w.opens.toISOString(), rows: w.rows })), mode: event.mode, waitlistFrom: event.waitlist_only_from.toISOString(), end: event.end.toISOString(), demo: PREVIEW };
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {(noindex || PREVIEW) && <meta name="robots" content="noindex, nofollow" />}
+  <meta name="theme-color" content="#050a1a" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/logo/diali-mark-white-256.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DIALI vzw" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={new URL(og, Astro.site).href} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
+  <script is:inline define:vars={{ stateConfig }}>
+    window.DIALI = stateConfig;
+    (function () {
+      var c = navigator.connection || {};
+      var lite = matchMedia('(prefers-reduced-motion: reduce)').matches || c.saveData === true || (navigator.deviceMemory && navigator.deviceMemory <= 2);
+      document.documentElement.classList.toggle('lite', !!lite);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+  <!-- Cloudflare Web Analytics (cookieless). Token set at deploy: TO CONFIRM -->
+</head>
+<body class={bodyClass}>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class={`site-header ${film ? '' : 'is-solid'}`} data-header data-film-page={film ? '1' : '0'}>
+    <div class="site-header__in">
+      <a class="brand" href="/" aria-label="DIALI vzw, home">
+        <img src="/logo/diali-mark-white-128.png" alt="" width="40" height="27" />
+        <span>DIALI <small>vzw</small></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        {nav.map(([l, h]) => <a href={h} aria-current={isCurrent(h) ? 'page' : undefined}>{l}</a>)}
+        <a class="btn btn--gold btn--small" href={primary.href} data-cta="header">{primary.label}</a>
+      </nav>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
+        <span class="sr-only">Open menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" /></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden data-menu>
+    <div class="mobile-menu__top">
+      <a class="brand" href="/"><img src="/logo/diali-mark-white-128.png" alt="" width="40" height="27" /><span>DIALI <small>vzw</small></span></a>
+      <button class="menu-btn" style="display:inline-flex" type="button" data-menu-close>
+        <span class="sr-only">Close menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <a href="/">Home</a>
+      {nav.map(([l, h]) => <a href={h} aria-current={isCurrent(h) ? 'page' : undefined}>{l}</a>)}
+    </nav>
+    <div class="mobile-menu__foot">
+      <a class="btn btn--gold btn--block" href={primary.href}>{primary.label}</a>
+      <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+    </div>
+  </div>
+
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+
+  {!hideBar && (
+    <div class="action-bar" data-action-bar aria-live="polite">
+      <a href={primary.href} data-action-link>
+        <span data-action-text>{past ? 'Next event soon' : event.fallback_text}</span>
+        <span>{past ? 'Partner' : 'Reserve'}</span>
+      </a>
+    </div>
+  )}
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="stack">
+          <a class="brand" href="/"><img src="/logo/diali-mark-white-128.png" alt="" width="40" height="27" /><span>DIALI <small>vzw</small></span></a>
+          <p class="serif" style="font-size:2rem;line-height:1.1;margin:12px 0 0">Seen. Ready. Chosen.</p>
+          <p class="muted">Youth sport, exposure, mindset and real opportunities.</p>
+        </div>
+        {past ? (
+          <div class="mini-event">
+            <span class="eyebrow" style="margin:0">Next up</span>
+            <strong>To be announced</strong>
+            <a class="link-arrow" href="/become-a-sponsor/partner">Partner with us</a>
+          </div>
+        ) : (
+          <div class="mini-event">
+            <span class="eyebrow" style="margin:0">{event.date_label}</span>
+            <strong class="serif" style="font-size:1.75rem;line-height:1.1">{event.title}</strong>
+            <span class="muted small">{event.venue.name}, {event.venue.city} · Doors {event.doors} · Registration only · limited seats</span>
+            <a class="btn btn--gold btn--small" style="justify-self:start;margin-top:8px" href="/seats">Reserve your seat</a>
+          </div>
+        )}
+      </div>
+      <nav class="footer-cols" aria-label="Footer">
+        <a href="/the-mind-behind-the-game">Conference</a>
+        <a href="/fc27">FC 27</a>
+        <a href="/our-programs">Programs</a>
+        <a href="/events">Events</a>
+        <a href="/news">News</a>
+        <a href="/become-a-sponsor/partner">Partners</a>
+        <a href="/clubs">Clubs</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div style="margin-top:40px"><EUBlock compact /></div>
+      <div class="footer-legal">
+        <span><a href={`mailto:${EMAIL}`}>{EMAIL}</a> · {LEGAL}</span>
+        <span><a href="/privacy">Privacy</a> · <a href="/seats-privacy">Booking privacy</a> · Social: <span class="tbc">To confirm</span></span>
+      </div>
+    </div>
+  </footer>
+
+  {PREVIEW && <div style="position:fixed;left:12px;top:calc(var(--header-h) + 8px);z-index:96;pointer-events:none" class="small"><span class="tbc">Preview · not live</span></div>}
+
+  <script>
+    import '../scripts/chrome.js';
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+---
+import Img from './Img.astro';
+interface Props { k: string; alt: string; sizes?: string; caption?: string; ratio?: string; class?: string; ai?: boolean; eager?: boolean }
+const { k, alt, sizes = '(min-width: 900px) 50vw, 100vw', caption, ratio = '16 / 9', class: cls = '', ai = false, eager } = Astro.props;
+---
+<figure class={`photo ${cls}`} style={`aspect-ratio:${ratio};margin:0`}>
+  <Img k={k} alt={alt} sizes={sizes} eager={eager} />
+  {(caption || ai) && <figcaption>{caption}{ai && <span class="ai-note"> · Illustration, not a real DIALI event</span>}</figcaption>}
+</figure>

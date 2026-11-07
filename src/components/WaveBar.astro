@@ -1,0 +1,10 @@
+---
+import { event } from '../lib/site';
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'Europe/Brussels' });
+---
+<div class="wavebar" data-wavebar>
+  <p style="margin:0;font-weight:600" aria-live="polite" data-wave-status>Seats open in waves.</p>
+  <ol>
+    {event.waves.map((w) => <li data-wave={w.n} data-opens={w.opens.toISOString()}><strong>Wave {w.n}</strong>{fmt(w.opens)} · rows {w.rows}</li>)}
+  </ol>
+</div>

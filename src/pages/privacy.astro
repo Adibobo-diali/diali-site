@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { EMAIL, LEGAL } from '../lib/site';
+---
+<Base title="Privacy notice | DIALI" description="How DIALI vzw handles your personal data: what we collect, why, who processes it, how long we keep it and your rights.">
+  <article class="section" style="padding-top:calc(var(--header-h) + 56px)">
+    <div class="wrap narrow article prose">
+      <span class="eyebrow">Last updated 6 November 2026</span>
+      <h1 style="font-size:var(--fs-h2)">Privacy notice</h1>
+      <p class="lead">Short version: we only collect what we need to run our events and answer you, we never sell it, and this site sets no cookies.</p>
+      <h2>Who we are</h2>
+      <p>DIALI vzw, {LEGAL}. Contact for anything privacy-related: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p>
+      <h2>What we collect and why</h2>
+      <ul>
+        <li><strong>Seat bookings:</strong> your email, your name, first names of extra guests, your seats, whether you want to play FC 27 (and whether you are under 16), your language and, if you came through a club link, the club code. Purpose: to hold your seat, email your confirmation and reminders, and check you in. Legal basis: taking the steps you asked for (contract).</li>
+        <li><strong>Messages and partnership or club requests:</strong> your name, email, organisation and message. Purpose: to reply. Legal basis: legitimate interest.</li>
+        <li><strong>Newsletter:</strong> only if you tick the box. Legal basis: consent, which you can withdraw at any time.</li>
+        <li><strong>FC 27 waiting list:</strong> collected through Microsoft Forms (name, email, under 16 or not).</li>
+      </ul>
+      <h2>Minors</h2>
+      <p>You can book yourself from age 13. Under 13, a parent books for you. Players under 16 need a parent or guardian's permission for FC 27, given at check-in. We only publish photos of minors with documented consent, and never with their names.</p>
+      <h2>Who processes your data for us</h2>
+      <ul>
+        <li><strong>Cloudflare</strong>: hosting, spam protection (Turnstile) and cookieless visitor statistics (Web Analytics).</li>
+        <li><strong>Google</strong> (Apps Script and Sheets): our booking and message records.</li>
+        <li><strong>Resend</strong>: sending booking emails.</li>
+        <li><strong>Microsoft</strong> (Outlook, Forms): our inbox and the FC 27 waiting list.</li>
+      </ul>
+      <p>Some of these providers may process data outside the EU under the European Commission's standard contractual clauses or adequacy decisions.</p>
+      <h2>How long we keep it</h2>
+      <ul>
+        <li>Bookings for The Mind Behind the Game are deleted on <strong>20 January 2027</strong>.</li>
+        <li>Messages are kept for <strong>12 months</strong>.</li>
+        <li>Newsletter subscriptions until you unsubscribe.</li>
+      </ul>
+      <h2>Cookies</h2>
+      <p>This site sets no cookies and uses no tracking for advertising, so there is no cookie banner. Your browser may store your language choice and, in the booking flow, your progress, on your own device only.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see, correct, delete or export your data, object to its use, or withdraw consent. Email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>; we reply within one month. You can also complain to the Belgian Data Protection Authority (Gegevensbeschermingsautoriteit, <a href="https://www.gegevensbeschermingsautoriteit.be" rel="noopener">gegevensbeschermingsautoriteit.be</a>).</p>
+    </div>
+  </article>
+  <style is:global>.prose h2{font-size:var(--fs-h3);margin-top:1.6em}.prose li{margin-bottom:.5em}</style>
+</Base>

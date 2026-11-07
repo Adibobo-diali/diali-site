@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import ShareBlock from '../../components/ShareBlock.astro';
+import { event, fc27, EMAIL } from '../../lib/site';
+const v = event.venue;
+const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title + ' · DIALI')}&dates=20261220T093000Z/20261220T123000Z&location=${encodeURIComponent(`${v.name}, ${v.street}, ${v.postcode} ${v.city}`)}`;
+---
+<Base title="You're in · The Mind Behind the Game | DIALI" description="Your seat for The Mind Behind the Game is confirmed." noindex hideBar>
+  <section class="section" style="padding-top:calc(var(--header-h) + 40px)">
+    <div class="wrap narrow">
+      <div data-loading><p class="lead">Loading your booking…</p></div>
+      <div data-missing hidden class="glass"><p>We could not find this booking. Check the link in your confirmation email, or email <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.</p></div>
+      <div data-ok hidden>
+        <p class="demo-note" hidden data-demo style="padding:10px 14px;border-radius:6px;background:#ffb86b;color:#1a1205;font-weight:600">Preview: this booking is simulated in your browser. No email was sent.</p>
+        <div class="ticket" style="margin-top:12px">
+          <div class="ticket__main">
+            <span class="eyebrow" style="margin:0">{event.title}</span>
+            <h1 style="font-size:var(--fs-h2);margin:6px 0 0" data-headline>You're in.</h1>
+            <dl>
+              <dt>Names</dt><dd data-names></dd>
+              <dt>Date</dt><dd>{event.date_label}</dd>
+              <dt>Doors</dt><dd>{event.doors} · programme {event.programme_label}</dd>
+              <dt>Venue</dt><dd>{v.name}, {v.street}, {v.postcode} {v.city} · <a href={v.maps} target="_blank" rel="noopener">Map</a></dd>
+            </dl>
+          </div>
+          <div class="ticket__stub"><span class="eyebrow" style="margin:0">Seats</span><span class="stat__n" data-seats style="font-size:2rem"></span></div>
+        </div>
+        <div class="row" style="margin-top:20px">
+          <a class="btn btn--gold btn--small" href="/the-mind-behind-the-game.ics" download>Add to calendar (.ics)</a>
+          <a class="btn btn--outline btn--small" href={gcal} target="_blank" rel="noopener">Google Calendar</a>
+          <a class="btn btn--outline btn--small" data-manage href="/seats/manage">Manage or release your seats</a>
+        </div>
+        <p class="muted" style="margin-top:16px">We sent a confirmation to <strong data-email></strong>. Can't come after all? Release your seat so someone on the waitlist can have it.</p>
+
+        <div style="margin-top:40px" data-fc-yes hidden>
+          <span class="eyebrow">FC 27 tournament</span>
+          <h2 style="font-size:var(--fs-h3)">You're on the FC 27 list: <span data-fc-names></span></h2>
+          <p class="muted">Check in on the day to play. {fc27.no_guarantee}</p>
+          <ShareBlock />
+        </div>
+        <div style="margin-top:40px" data-fc-no hidden class="glass">
+          <h2 class="h-small">Want to play FC 27?</h2>
+          <p class="muted">{fc27.places} players, knockout, straight after the conference.</p>
+          <a class="link-arrow" href="/fc27">FC 27 tournament</a>
+        </div>
+        <div style="margin-top:32px">
+          <h2 class="h-small">Share that you're coming</h2>
+          <div class="row">
+            <a class="btn btn--outline btn--small" href={`https://wa.me/?text=${encodeURIComponent("I'm going to The Mind Behind the Game, Sun 20 Dec, Gentbrugge. https://www.dialivzw.eu/the-mind-behind-the-game")}`} target="_blank" rel="noopener">WhatsApp</a>
+            <button class="btn btn--outline btn--small" type="button" data-copy="https://www.dialivzw.eu/the-mind-behind-the-game">Copy link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    import { getBooking, isDemo } from '../../scripts/api.js';
+    const token = new URLSearchParams(location.search).get('token') || '';
+    const $ = (s) => document.querySelector(s);
+    (async () => {
+      let b = null;
+      const res = await getBooking(token);
+      if (res.ok) b = res.booking; else { try { const c = JSON.parse(sessionStorage.getItem('diali-last-booking') || 'null'); if (c && c.token === token) b = c; } catch {} }
+      $('[data-loading]').hidden = true;
+      if (!b) { $('[data-missing]').hidden = false; return; }
+      $('[data-ok]').hidden = false; if (isDemo()) $('[data-demo]').hidden = false;
+      const seats = b.seats.slice().sort((x, y) => x[0].localeCompare(y[0]) || Number(x.slice(1)) - Number(y.slice(1)));
+      const fmt = (s) => `Row ${s[0]}, seat ${s.slice(1)}`;
+      $('[data-headline]').textContent = seats.length === 1 ? `You're in. ${fmt(seats[0])}.` : `You're in. ${seats.length} seats.`;
+      $('[data-seats]').textContent = seats.join(' · ');
+      $('[data-names]').textContent = [b.name, ...(b.guests || [])].join(', ');
+      $('[data-email]').textContent = b.email;
+      $('[data-manage]').href = `/seats/manage?token=${encodeURIComponent(b.token)}`;
+      if (b.fc27 && b.fc27.length) { $('[data-fc-yes]').hidden = false; $('[data-fc-names]').textContent = b.fc27.map((f) => f.name).join(', '); } else $('[data-fc-no]').hidden = false;
+    })();
+    document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => { navigator.clipboard?.writeText(b.dataset.copy); b.textContent = 'Copied'; }));
+  </script>
+</Base>

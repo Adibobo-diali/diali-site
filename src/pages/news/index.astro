@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import Banner from '../../components/Banner.astro';
+import Photo from '../../components/Photo.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p !== featured);
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="News · Stories from the pitch | DIALI" description="News from DIALI vzw: The Mind Behind the Game, Spot The Spark and Dream Big Tournament II.">
+  <Banner eyebrow="News" title="Stories from the pitch." />
+  <section class="section">
+    <div class="wrap">
+      <a class="card card--big" href={`/news/${featured.id}`}>
+        <Photo k={featured.data.photo} alt="" ai={featured.data.photo_is_ai} />
+        <div><span class="eyebrow">{fmt(featured.data.date)}</span><h2>{featured.data.title}</h2><p class="lead">{featured.data.excerpt}</p><span class="link-arrow">Read</span></div>
+      </a>
+      <div class="grid grid-3" style="margin-top:56px">
+        {rest.map((p) => (
+          <a class="card" href={`/news/${p.id}`}>
+            <Photo k={p.data.photo} alt="" ai={p.data.photo_is_ai} sizes="(min-width: 900px) 33vw, 100vw" />
+            <span class="eyebrow" style="margin:0">{fmt(p.data.date)}</span>
+            <h3 style="font-size:1.75rem">{p.data.title}</h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
