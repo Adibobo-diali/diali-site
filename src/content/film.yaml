@@ -6,6 +6,8 @@ version: continuous-5.3
 clip:
   desktop: /film/home-desktop.mp4
   mobile: /film/home-mobile.mp4
+  poster_desktop: /film/home-poster-desktop.jpg
+  poster_mobile: /film/home-poster-mobile.jpg
   version: "20261107"
   segments:
     - { id: tunnel,     d: 8.000 }

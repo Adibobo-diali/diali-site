@@ -90,7 +90,7 @@ function init() {
   function makeClip() {
     if (!useClip) return;
     clip?.destroy();
-    clipEl.poster = `/film/home-poster-${isMobile ? 'mobile' : 'desktop'}.jpg?v=${C.version}`;
+    clipEl.poster = isMobile ? C.poster_mobile : C.poster_desktop;
     clip = new Clip(clipEl, `${isMobile ? C.mobile : C.desktop}?v=${C.version}`);
   }
   makeClip();

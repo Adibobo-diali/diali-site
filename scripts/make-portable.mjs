@@ -14,9 +14,13 @@ const walk = async (d) => (await Promise.all((await fs.readdir(d, { withFileType
 let files = await walk(out);
 // Drop AVIF and unused JPG fallbacks, and the API-only / server files.
 for (const f of files) if (/\.avif$/.test(f) || /\/media\/.*\.jpg$/.test(f) || /_redirects$|_headers$/.test(f)) await fs.rm(f);
+// The 5.3 film plays from one video; the 5.2 canvas frames are not used, so they stay out of the preview.
+await fs.rm(path.join(out, 'frames'), { recursive: true, force: true });
+// Preview only: modern browsers use woff2, the copy is Latin only, and the host refuses .ics files.
+for (const f of await walk(out)) if (/\.woff$/.test(f) || /(cyrillic|greek|vietnamese)[^/]*\.woff2$/.test(f) || /\.ics$/.test(f)) await fs.rm(f);
 files = await walk(out);
 const pageDirs = new Set(files.filter((f) => f.endsWith('index.html')).map((f) => path.relative(out, path.dirname(f)).replace(/\\/g, '/')));
-const assetRoots = ['media/', 'frames/', 'video/', 'logo/', 'brand/', 'og/', 'styleguide/before', 'assets/', 'favicon.ico', 'the-mind-behind-the-game.ics', 'api/'];
+const assetRoots = ['media/', 'frames/', 'film/', 'video/', 'logo/', 'brand/', 'og/', 'styleguide/before', 'assets/', 'favicon.ico', 'the-mind-behind-the-game.ics', 'api/'];
 
 function fixUrl(u) {
   // u starts with "/" (no protocol-relative)
@@ -33,7 +37,7 @@ function fixUrl(u) {
 }
 const ATTR = /((?:href|src|poster|content|action|data-src-desktop|data-src-mobile)=")(\/[^"]*)"/g;
 const SRCSET = /(srcset=")([^"]*)"/g;
-const JSSTR = /(["'`])(\/(?:media|frames|video|logo|brand|og|seats|fc27|events|news|clubs|contact|privacy|our-programs|become-a-sponsor|the-mind-behind-the-game|admin|styleguide)[^"'`\s]*)\1/g;
+const JSSTR = /(["'`])(\/(?:media|frames|film|video|logo|brand|og|seats|fc27|events|news|clubs|contact|privacy|our-programs|become-a-sponsor|the-mind-behind-the-game|admin|styleguide)[^"'`\s]*)\1/g;
 const JSTPL = /`\/(seats\/(?:confirmed|manage))\?/g;
 const CSSURL = /url\((\/[^)]+)\)/g;
 
