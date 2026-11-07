@@ -78,8 +78,15 @@ const roundNames = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final', 'Wi
           <li>Check-in required</li>
           <li>The winner must be present to receive the prize: {fc27.prize_text}</li>
           <li>Players under 16 need a parent or guardian's permission, given at check-in</li>
-          <li>Match length, settings, controllers: <span class="tbc">To confirm</span></li>
         </ul>
+        <h3 style="font-size:1.75rem;margin-top:28px">The format</h3>
+        <ul class="rules">
+          {fc27.format_details.map((r) => <li>{r}</li>)}
+        </ul>
+        <h3 style="font-size:1.75rem;margin-top:28px">The afternoon</h3>
+        <dl class="fc-schedule">
+          {fc27.schedule.map((x) => <><dt>{x.time}</dt><dd>{x.what}</dd></>)}
+        </dl>
         <p class="lead" style="margin-top:28px"><strong>Why a game at a mindset conference?</strong> {fc27.why}</p>
       </div>
       <div class="stack">
@@ -149,4 +156,5 @@ const roundNames = ['Round of 16', 'Quarter-finals', 'Semi-finals', 'Final', 'Wi
     // Count arrivals from a shared challenge.
     if (new URLSearchParams(location.search).get('ref') === 'share') { try { navigator.sendBeacon?.('/api/track', JSON.stringify({ e: 'share_arrival', p: '/fc27' })); } catch {} }
   </script>
+  <style>.fc-schedule{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0}.fc-schedule dt{color:var(--gold,#d9b45a);font-weight:600}.fc-schedule dd{margin:0}</style>
 </Base>

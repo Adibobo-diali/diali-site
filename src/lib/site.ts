@@ -21,7 +21,7 @@ export const event = z.object({
 }).parse(read('event.yaml'));
 export const fc27 = z.object({
   title: z.string(), sub: z.string(), waitlist_form: z.string().url(), places: z.number(), format: z.string(), show_count_from: z.number(),
-  prize_text: z.string(), prize_partner_confirmed: z.boolean(), no_guarantee: z.string(), share_text: z.string(), why: z.string(), format_details: z.string(), faq: z.array(QA),
+  prize_text: z.string(), prize_partner_confirmed: z.boolean(), no_guarantee: z.string(), share_text: z.string(), why: z.string(), format_details: z.array(z.string()), schedule: z.array(z.object({ time: z.string(), what: z.string() })), faq: z.array(QA),
 }).parse(read('fc27.yaml'));
 export const home = read('home.yaml');
 export const film = read('film.yaml');

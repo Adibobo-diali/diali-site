@@ -263,6 +263,14 @@
   ],
   "base": "/media/photos/scouting-trial-group"
  },
+ "photos/speaker-stallone": {
+  "w": 400,
+  "h": 500,
+  "widths": [
+   400
+  ],
+  "base": "/media/photos/speaker-stallone"
+ },
  "photos/sport-for-solidarity-banner": {
   "w": 1280,
   "h": 1920,

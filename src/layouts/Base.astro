@@ -29,7 +29,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 const past = event.mode === 'past';
 const primary = past ? { label: 'Partner with us', href: '/become-a-sponsor/partner' } : { label: 'Reserve your seat', href: '/seats' };
 const org = {
-  '@context': 'https://schema.org', '@type': 'NGO', name: 'DIALI vzw', url: 'https://www.dialivzw.eu', logo: 'https://www.dialivzw.eu/logo/diali-mark-white-256.png',
+  '@context': 'https://schema.org', '@type': 'NGO', name: 'DIALI vzw', url: 'https://www.dialivzw.eu', sameAs: ['https://www.instagram.com/d.i.a.l.i/'], logo: 'https://www.dialivzw.eu/logo/diali-mark-white-256.png',
   email: EMAIL, slogan: 'Seen. Ready. Chosen.', taxID: 'BE1013473618', address: { '@type': 'PostalAddress', addressLocality: 'Aalst', addressCountry: 'BE' },
 };
 const stateConfig = { api: event.api_url, fallback: event.fallback_text, waitlist: event.waitlist_text, waves: event.waves.map(w => ({ n: w.n, opens: w.opens.toISOString(), rows: w.rows })), mode: event.mode, waitlistFrom: event.waitlist_only_from.toISOString(), end: event.end.toISOString(), demo: PREVIEW };
@@ -155,7 +155,7 @@ const stateConfig = { api: event.api_url, fallback: event.fallback_text, waitlis
       <div style="margin-top:40px"><EUBlock compact /></div>
       <div class="footer-legal">
         <span><a href={`mailto:${EMAIL}`}>{EMAIL}</a> · {LEGAL}</span>
-        <span><a href="/privacy">Privacy</a> · <a href="/seats-privacy">Booking privacy</a> · Social: <span class="tbc">To confirm</span></span>
+        <span><a href="/privacy">Privacy</a> · <a href="/seats-privacy">Booking privacy</a> · <a href="https://www.instagram.com/d.i.a.l.i/" rel="noopener" target="_blank">Instagram @d.i.a.l.i</a></span>
       </div>
     </div>
   </footer>

@@ -9,11 +9,28 @@ prize_partner_confirmed: false
 no_guarantee: Signing up does not guarantee a place. The 16 places go to registered attendees who check in on the day.
 share_text: "I'm in. Are you? FC 27 tournament at The Mind Behind the Game, Sun 20 Dec, Gentbrugge. 16 places."
 why: "Everything you hear in the morning, you use in the afternoon: pressure, focus, bouncing back."
-format_details: TO CONFIRM   # match length, settings, controllers provided?
+# Format written 7 Nov 2026 at Adnan's request ("create it, make it realistic").
+# Planning basis: 4 PlayStation 5 set-ups, 15 matches, done by about 15:30.
+format_details:
+  - "PlayStation 5, 1 v 1 Kick-Off. Consoles, screens and controllers are provided; you may bring your own DualSense."
+  - "Halves of 4 minutes, normal game speed. The final is played on the big screen with halves of 6 minutes."
+  - "Pick any club or national team, men's or women's. Both players may pick the same team."
+  - "A draw ends level: extra time, then penalties, as the game plays them."
+  - "Pause only when the ball is out of play, and say so out loud. Three pauses per player per match."
+  - "The draw is random and shown on screen at check-in. A no-show at the draw gives the place to the next player present."
+schedule:
+  - { time: "13:30", what: "Conference ends. Check-in at the FC 27 desk" }
+  - { time: "13:50", what: "Live draw on screen" }
+  - { time: "14:00", what: "Round of 16" }
+  - { time: "14:30", what: "Quarter-finals" }
+  - { time: "14:50", what: "Semi-finals" }
+  - { time: "15:10", what: "Final on the big screen, then the prize" }
 faq:
   - q: Do I need my own controller?
-    a: TO CONFIRM
+    a: No. Controllers are provided. You may bring your own DualSense if you prefer it.
+  - q: How long does it take?
+    a: About two hours, from check-in at 13:30 to the final at around 15:10. You can leave once you are knocked out, or stay and watch.
   - q: Can I play if I didn't sign up?
     a: Only if places are left after check-in.
   - q: Is there an age limit?
-    a: TO CONFIRM. Players under 16 need a parent or guardian's permission, given at check-in.
+    a: The tournament is open to players aged 12 and up. Players under 16 need a parent or guardian's permission, given at check-in.
