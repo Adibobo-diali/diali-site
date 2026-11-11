@@ -67,9 +67,10 @@ function init() {
   function build() {
     tl?.kill(); st?.kill();
     measure();
+    // Paced for reading in flicks: every text beat holds about 75vh fully visible, phones included.
     const B = isMobile
-      ? { noise: 100, mind: 60, intro: 40, q: 50, spot: 45, voice: 90, pull: 45, hall: 80, fc: 90 }
-      : { noise: 140, mind: 80, intro: 50, q: 70, spot: 60, voice: 120, pull: 60, hall: 100, fc: 120 };
+      ? { noise: 120, mind: 130, intro: 115, q: 115, spot: 45, voice: 165, pull: 45, hall: 140, fc: 150 }
+      : { noise: 140, mind: 130, intro: 115, q: 115, spot: 60, voice: 165, pull: 60, hall: 140, fc: 120 };
     const order = [['noise', B.noise], ['mind', B.mind], ['intro', B.intro], ['q0', B.q], ['q1', B.q], ['q2', B.q], ['q3', B.q], ['spot', B.spot], ['voice', B.voice], ['pull', B.pull], ['hall', B.hall], ['fc27', B.fc]];
     const at = {}; let t = 0;
     order.forEach(([id, d]) => { at[id] = { s: t, d, e: t + d }; t += d; });
@@ -81,8 +82,8 @@ function init() {
     tl.set({}, {}, t);
     const chap = (id, s, d, a = 0.12, b = 0.82) => {
       const el = root.querySelector(`[data-chapter="${id}"]`); if (!el) return;
-      if (id !== 'noise') tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: d * 0.15, ease: 'power2.out' }, s + d * a);
-      if (b < 1) tl.to(el, { opacity: 0, y: -12, duration: d * 0.12, ease: 'power2.in' }, s + d * b);
+      if (id !== 'noise') tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: Math.min(16, d * 0.2), ease: 'power2.out' }, s + d * a);
+      if (b < 1) tl.to(el, { opacity: 0, y: -12, duration: Math.min(12, d * 0.15), ease: 'power2.in' }, s + d * b);
     };
     // C1 the noise
     const N = at.noise;
@@ -96,8 +97,8 @@ function init() {
     tl.set(L('mind'), { opacity: 1 }, M.s); tl.set(L('penalty'), { opacity: 0 }, M.s + 0.01);
     tl.to(dip, { opacity: 0, duration: M.d * 0.12 }, M.s);
     tl.fromTo(cam, { s: 1.35 }, { s: 1, duration: M.d, ease: 'sine.out' }, M.s);
-    chap('mind', M.s, M.d, 0.15, 0.85);
-    chap('intro', at.intro.s, at.intro.d, 0.05, 0.85);
+    chap('mind', M.s, M.d, 0.1, 0.9);
+    chap('intro', at.intro.s, at.intro.d, 0.05, 0.9);
     // C3 one continuous star path: wide → 1 → 2 → 3 → 4, active star brighter; no pull-back at the end.
     const sStar = isMobile ? 3.4 : 3.0;
     cfg.questions.forEach((q, i) => {
@@ -105,7 +106,7 @@ function init() {
       tl.to(cam, { x: q.star[0], y: q.star[1], s: sStar, duration: Q.d * 0.35, ease: 'power2.inOut' }, Q.s);
       tl.to(stars[i], { '--op': 1, '--sc': 1.9, duration: Q.d * 0.25 }, Q.s + Q.d * 0.15);
       if (i < 3) tl.to(stars[i], { '--op': 0.35, '--sc': 1, duration: Q.d * 0.2 }, Q.e);
-      chap('q' + i, Q.s, Q.d, 0.3, 0.86);
+      chap('q' + i, Q.s, Q.d, 0.1, 0.92);
     });
     // C3 → C4 star → spotlight: star 4 swells to fill the screen with light gold, C4 revealed under it.
     const SP = at.spot;
@@ -121,10 +122,10 @@ function init() {
       tl.set(L('cclip'), { opacity: 1 }, SP.s + SP.d * 0.62);
       VC(seg.enter.s, seg.enter.e - eps, SP.s + SP.d * 0.62, SP.d * 0.38 + V.d * 0.3, 'sine.inOut');
       VC(seg.push.s, seg.push.e - eps, V.s + V.d * 0.3, V.d * 0.7);
-      chap('voice', V.s, V.d, 0.35, 0.88);
+      chap('voice', V.s, V.d, 0.3, 0.92);
       // C5 back out up the aisle to the entrance, the doors close.
       VC(seg.back.s, seg.back.e - eps, P.s, P.d + Hl.d * 0.2, 'sine.inOut');
-      chap('hall', Hl.s, Hl.d, 0.2, 0.7);
+      chap('hall', Hl.s, Hl.d, 0.12, 0.8);
       VC(seg.close.s, seg.close.e - eps, Hl.s + Hl.d * 0.55, Hl.d * 0.45, 'power1.in');
       // C6 from the dark, pull back out of the number 20 to the penalty taker: then the game.
       VC(seg.twenty.s, seg.twenty.e - eps, F.s, F.d * 0.65, 'sine.inOut');

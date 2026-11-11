@@ -179,10 +179,29 @@ function init() {
     tl.set({}, {}, total); // make the timeline exactly `total` long
 
     // Chapters: in (0.6 s feel), hold, out before the handover.
-    const chap = (id, s, d, inAt = 0.12, outAt = 0.82) => {
+    // Text beats: fixed ramps in vh so the plateau stays long enough to read in flicks.
+    // fx = the entrance, chosen to echo the footage: 'depth' (flying into a tunnel), 'doors' (the doors part),
+    // 'stagger' (items land one by one), default a soft rise. All scrubbed, so they reverse on scroll-up.
+    const RIN = 16, ROUT = 12;
+    const chap = (id, s, d, inAt = 0.12, outAt = 0.82, fx = 'rise') => {
       const el = root.querySelector(`[data-chapter="${id}"]`); if (!el) return;
-      if (id !== 'breathe') { tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: d * 0.12, ease: 'power2.out' }, s + d * inAt); }
-      if (outAt < 1) tl.to(el, { opacity: 0, y: -12, duration: d * 0.1, ease: 'power2.in' }, s + d * outAt);
+      const din = Math.min(RIN, d * 0.2), t0 = s + d * inAt;
+      if (id !== 'breathe') {
+        if (fx === 'depth') {
+          tl.fromTo(el, { opacity: 0, y: 0, scale: 0.86, transformOrigin: '0% 60%' }, { opacity: 1, scale: 1, duration: din * 1.4, ease: 'power3.out' }, t0);
+        } else if (fx === 'doors') {
+          tl.fromTo(el, { opacity: 0, y: 0 }, { opacity: 1, duration: din * 0.5 }, t0);
+          const title = el.querySelector('.chapter__title');
+          if (title) tl.fromTo(title, { clipPath: 'inset(-10% 50% -10% 50%)' }, { clipPath: 'inset(-10% 0% -10% 0%)', duration: din * 1.6, ease: 'power2.inOut' }, t0);
+        } else if (fx === 'stagger') {
+          tl.fromTo(el, { opacity: 0, y: 0 }, { opacity: 1, duration: din * 0.5 }, t0);
+          const items = el.querySelectorAll('li');
+          items.forEach((li, i) => tl.fromTo(li, { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: din * 0.8, ease: 'power2.out' }, t0 + i * din * 0.35));
+        } else {
+          tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: din, ease: 'power2.out' }, t0);
+        }
+      }
+      if (outAt < 1) tl.to(el, { opacity: 0, y: -12, duration: Math.min(ROUT, d * 0.15), ease: 'power2.in' }, s + d * outAt);
     };
 
     // 1 Breathe: the exit light grows.
@@ -203,27 +222,27 @@ function init() {
       const Hb = at.hub;
       tl.set(L('hub'), { opacity: 1 }, Hb.s);
       V(seg.hub.s, seg.hub.e - eps, Hb.s, Hb.d * 0.8, 'sine.inOut');
-      chap('hub', Hb.s, Hb.d, 0.15, 0.85);
+      chap('hub', Hb.s, Hb.d, 0.08, 0.92, 'stagger');
       // 4-7 Each tunnel: dive in, the doors open, the photo comes through; then rewind back out to the hub.
       order.forEach((k, idx) => {
         const A = at[k]; const D = seg[k]; const O = seg[k + 'O'];
         const end = (O || D).e - eps;
-        V(D.s, end, A.s, A.d * 0.55, 'power1.inOut');
+        V(D.s, end, A.s, A.d * 0.42, 'power1.inOut');
         if (k === 'conferences') {
-          chap(k, A.s, A.d, 0.5, 0.92);
+          chap(k, A.s, A.d, 0.4, 0.96, 'doors');
         } else {
           const pn = panels[k];
-          tl.fromTo(pn, { p: 0, o: 0 }, { p: 1, o: 1, duration: A.d * 0.3, ease: 'power2.out' }, A.s + A.d * 0.5);
-          tl.to(pn, { push: 1.08, duration: A.d * 0.2 }, A.s + A.d * 0.8);
-          chap(k, A.s, A.d, 0.55, 0.92);
+          tl.fromTo(pn, { p: 0, o: 0 }, { p: 1, o: 1, duration: A.d * 0.2, ease: 'power2.out' }, A.s + A.d * 0.34);
+          tl.to(pn, { push: 1.08, duration: A.d * 0.4 }, A.s + A.d * 0.56);
+          chap(k, A.s, A.d, 0.38, 0.95, 'depth');
         }
         const S = at[idx < 3 ? `spin${idx + 1}` : 'spinback'];
         if (k !== 'conferences') tl.to(panels[k], { o: 0, p: 0.4, duration: S.d * 0.25, ease: 'power1.in' }, S.s);
         V(end, D.s, S.s + S.d * 0.1, S.d * 0.8, 'power1.inOut');
       });
       const SB = at.spinback;
-      chap('spinback', SB.s, SB.d, 0.1, 0.7);
-      tl.to(dip, { opacity: 1, duration: SB.d * 0.15, ease: 'power1.in' }, SB.e - SB.d * 0.15);
+      chap('spinback', SB.s, SB.d, 0.06, 0.88);
+      tl.to(dip, { opacity: 1, duration: SB.d * 0.1, ease: 'power1.in' }, SB.e - SB.d * 0.1);
       // 9 Team: the walk-out, one by one, names landing in title order.
       const Tm = at.team;
       tl.to(dip, { opacity: 0, duration: Tm.d * 0.06 }, Tm.s);

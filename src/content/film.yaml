@@ -53,16 +53,18 @@ hub:
 frames:
   walkout: { desktop: /frames/desktop/walkout, mobile: /frames/mobile/walkout, count: 101, fps: 20, version: "20261106" }
 beats:
-  - { id: breathe,     vh: 80,  vhMobile: 45 }
-  - { id: runout,      vh: 120, vhMobile: 90 }
-  - { id: hub,         vh: 50,  vhMobile: 40 }
-  - { id: workshop,    vh: 100, vhMobile: 75, photo: photos/spot-the-spark-room }
+# Paced for reading in flicks: each text beat holds its words fully visible for about 75vh
+# (5 normal wheel flicks), phones included. Checked with scratch flick test 120/240/360 px.
+  - { id: breathe,     vh: 80,  vhMobile: 80 }
+  - { id: runout,      vh: 140, vhMobile: 120 }
+  - { id: hub,         vh: 120, vhMobile: 120 }
+  - { id: workshop,    vh: 170, vhMobile: 170, photo: photos/spot-the-spark-room }
   - { id: spin1,       vh: 50,  vhMobile: 40 }
-  - { id: tournaments, vh: 100, vhMobile: 75, photo: photos/dream-big-ii-group }
+  - { id: tournaments, vh: 170, vhMobile: 170, photo: photos/dream-big-ii-group }
   - { id: spin2,       vh: 50,  vhMobile: 40 }
-  - { id: scouting,    vh: 100, vhMobile: 75, photo: photos/scouting-cultural-leonesa }
+  - { id: scouting,    vh: 170, vhMobile: 170, photo: photos/scouting-cultural-leonesa }
   - { id: spin3,       vh: 50,  vhMobile: 40 }
-  - { id: conferences, vh: 120, vhMobile: 90 }
-  - { id: spinback,    vh: 40,  vhMobile: 30 }
-  - { id: team,        vh: 220, vhMobile: 160 }
-  - { id: ending,      vh: 180, vhMobile: 130 }
+  - { id: conferences, vh: 170, vhMobile: 170 }
+  - { id: spinback,    vh: 115, vhMobile: 115 }
+  - { id: team,        vh: 220, vhMobile: 200 }
+  - { id: ending,      vh: 180, vhMobile: 160 }
